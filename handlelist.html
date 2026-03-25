@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="no" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Kurv">
+<meta name="theme-color" content="#FAF8F5" id="themeColor">
+<link rel="manifest" href="manifest.json">
+<title>Kurv</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+[data-theme="light"]{
+  --bg:#FAF8F5;--surface:#FFFFFF;--surface2:#F4F2EF;
+  --ink:#1A1916;--soft:#6B6860;--ghost:#C4C2BE;
+  --accent:#2D6A4F;--al:#D8EFE4;--am:#52B788;
+  --warn:#E07A5F;--wl:#FDEEE9;--line:#EDEBE7;
+  --sh:0 1px 3px rgba(26,25,22,.06),0 4px 16px rgba(26,25,22,.04);
+  --sh2:0 4px 24px rgba(26,25,22,.13);
+  --ob-grad:linear-gradient(160deg,#EAF5EE 0%,#FAF8F5 60%);
+}
+[data-theme="dark"]{
+  --bg:#111110;--surface:#1C1B19;--surface2:#252422;
+  --ink:#F0EDE8;--soft:#9B9790;--ghost:#4A4845;
+  --accent:#52B788;--al:#1A3D2B;--am:#52B788;
+  --warn:#E07A5F;--wl:#2E1A14;--line:#2A2927;
+  --sh:0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.2);
+  --sh2:0 4px 24px rgba(0,0,0,.4);
+  --ob-grad:linear-gradient(160deg,#1A2E22 0%,#111110 60%);
+}
+
+html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;overscroll-behavior:none;transition:background .3s,color .3s}
+#app{display:flex;flex-direction:column;height:100dvh;max-width:430px;margin:0 auto;overflow:hidden}
+
+/* ── Onboarding ── */
+#onboard{position:fixed;inset:0;z-index:999;background:var(--ob-grad);display:flex;flex-direction:column;max-width:430px;margin:0 auto}
+.ob-slides{flex:1;display:flex;overflow:hidden}
+.ob-slide{min-width:100%;padding:56px 36px 24px;display:flex;flex-direction:column;justify-content:flex-end}
+.ob-illo{flex:1;display:flex;align-items:center;justify-content:center;font-size:88px}
+.ob-tag{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--am);font-weight:500;margin-bottom:10px}
+.ob-h{font-family:'Playfair Display',serif;font-size:30px;line-height:1.2;margin-bottom:12px}
+.ob-p{font-size:15px;color:var(--soft);line-height:1.6}
+.ob-bottom{padding:20px 36px max(32px,env(safe-area-inset-bottom));background:var(--ob-grad)}
+.ob-dots{display:flex;gap:6px;justify-content:center;margin-bottom:20px}
+.ob-dot{width:6px;height:6px;border-radius:3px;background:var(--ghost);transition:all .3s}
+.ob-dot.on{width:20px;background:var(--accent)}
+.ob-btn{width:100%;padding:16px;background:var(--ink);color:var(--bg);border:none;border-radius:14px;font-size:16px;font-weight:500;font-family:inherit;cursor:pointer}
+.ob-skip{width:100%;padding:10px;background:none;border:none;color:var(--ghost);font-size:14px;font-family:inherit;cursor:pointer;margin-top:8px}
+
+/* ── Header ── */
+.hdr{padding:52px 24px 14px;background:var(--bg);z-index:10;flex-shrink:0;transition:background .3s}
+.hdr-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);font-weight:500}
+.app-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:400;margin-top:2px}
+.hdr-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{width:34px;height:34px;border-radius:50%;background:var(--surface2);border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .3s}
+.icon-btn:active{transform:scale(.88)}
+.avatars{display:flex}
+.av{width:30px;height:30px;border-radius:50%;border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:#fff;margin-left:-6px;cursor:pointer;position:relative;flex-shrink:0;transition:transform .15s}
+.av:first-child{margin-left:0}
+.av.you{background:var(--accent)}
+.av.them{background:#9B8EA8}
+.av.plus{background:var(--surface2);border:1.5px dashed var(--ghost);color:var(--soft);font-size:16px}
+.ndot{position:absolute;top:-2px;right:-2px;width:10px;height:10px;border-radius:50%;background:var(--am);border:2px solid var(--bg);display:none;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.4);opacity:.7}}
+.pstatus{font-size:11px;color:var(--ghost);text-align:right;margin-top:5px}
+
+/* ── Nav ── */
+.nav-tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--line);flex-shrink:0;transition:background .3s,border-color .3s}
+.ntab{flex:1;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;font-family:inherit;position:relative;transition:all .15s}
+.ntab-ico{font-size:18px;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.ntab.on .ntab-ico{transform:scale(1.15)}
+.ntab-lbl{font-size:10px;font-weight:500;letter-spacing:.04em;color:var(--ghost);text-transform:uppercase;transition:color .2s}
+.ntab.on .ntab-lbl{color:var(--accent)}
+.ntab.on::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:2px;background:var(--accent);border-radius:1px;animation:tabIn .25s cubic-bezier(.34,1.56,.64,1)}
+@keyframes tabIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* ── List tabs ── */
+.tabs-wrap{padding:14px 24px 0;background:var(--bg);flex-shrink:0;transition:background .3s}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:14px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:7px 16px;border-radius:100px;font-size:13px;cursor:pointer;border:none;font-family:inherit;transition:all .2s cubic-bezier(.34,1.56,.64,1);outline:none}
+.tab.on{background:var(--ink);color:var(--bg);font-weight:500;transform:scale(1.04)}
+.tab:not(.on){background:transparent;color:var(--soft)}
+.tab.add{color:var(--accent);padding:7px 10px;font-size:20px;background:transparent}
+
+/* ── Bars ── */
+.vbar{display:flex;align-items:center;justify-content:space-between;padding:9px 24px;background:var(--surface);border-bottom:1px solid var(--line);flex-shrink:0;transition:background .3s}
+.vbar-l{font-size:12px;color:var(--soft);display:flex;align-items:center;gap:5px}
+.vbar-btn{font-size:12px;color:var(--accent);font-weight:500;background:var(--al);border:none;cursor:pointer;font-family:inherit;padding:5px 10px;border-radius:6px}
+.sumbar{display:flex;justify-content:space-between;align-items:center;padding:8px 24px;background:var(--surface);flex-shrink:0;font-size:13px;color:var(--soft);border-bottom:1px solid var(--line);transition:background .3s,border-color .3s}
+.sum-count{font-weight:500;color:var(--ink);transition:all .3s}
+.mark-all-btn{font-size:12px;color:var(--soft);background:var(--surface2);border:1px solid var(--line);border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .2s}
+.mark-all-btn:active{transform:scale(.95);background:var(--al);color:var(--accent)}
+.sum-right{display:flex;gap:6px;align-items:center}
+.sum-price{font-size:13px;color:var(--soft);cursor:pointer;transition:all .3s}
+.sum-done{font-size:13px;color:var(--accent);font-weight:500;cursor:pointer}
+
+/* ── List ── */
+.list{flex:1;overflow-y:auto;background:var(--surface);scrollbar-width:none;padding-bottom:130px;transition:background .3s}
+.list::-webkit-scrollbar{display:none}
+.store-hdr{display:flex;align-items:center;gap:10px;padding:13px 24px 9px;background:var(--surface2);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;transition:background .3s}
+.sbadge{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--al);padding:3px 10px;border-radius:100px}
+.scount{font-size:12px;color:var(--ghost);margin-left:auto}
+.cat-row{display:flex;align-items:center;padding:8px 24px 4px;gap:8px}
+.cat-lbl{font-size:11px;color:var(--ghost);font-weight:500;letter-spacing:.06em;text-transform:uppercase}
+
+/* ── Item wrapper — swipe mechanics ── */
+.item-wrap{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.item-wrap:last-child{border-bottom:none}
+
+/* Delete bg — reveals as you swipe */
+.swipe-bg{
+  position:absolute;inset:0;
+  background:var(--warn);
+  display:flex;align-items:center;justify-content:flex-end;
+  padding-right:28px;
+  pointer-events:none;
+}
+.swipe-del-lbl{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  opacity:0;transform:scale(.7);
+  transition:opacity .15s,transform .15s cubic-bezier(.34,1.56,.64,1);
+}
+.swipe-del-lbl .d-ico{font-size:22px}
+.swipe-del-lbl .d-txt{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+
+/* Item row */
+.item{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 24px;
+  background:var(--surface);
+  position:relative;
+  cursor:pointer;
+  will-change:transform;
+  touch-action:pan-y;
+  /* no transition here — JS handles swipe smoothly */
+}
+.item:active{background:var(--surface2)}
+
+/* Slide-in for new items */
+.item.new-in{animation:slideIn .35s cubic-bezier(.34,1.2,.64,1) both}
+@keyframes slideIn{
+  0%{opacity:0;transform:translateX(-32px) scale(.97)}
+  60%{opacity:1}
+  100%{opacity:1;transform:translateX(0) scale(1)}
+}
+
+/* Check state */
+.item.done .iname{text-decoration:line-through;color:var(--soft)}
+.item.done{opacity:.42}
+.item.done .item-cat-ico{opacity:.5}
+.item.recur .iname::after{content:'↻';font-size:10px;color:var(--am);margin-left:5px;vertical-align:middle}
+
+/* ── Check button ── */
+.chk{
+  width:26px;height:26px;border-radius:50%;
+  border:1.5px solid var(--ghost);
+  background:transparent;
+  flex-shrink:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color .15s,background .15s;
+  position:relative;
+  overflow:visible;
+}
+/* Ripple ring on check */
+.chk::after{
+  content:'';position:absolute;inset:-4px;border-radius:50%;
+  border:2px solid var(--accent);
+  opacity:0;transform:scale(.6);
+  pointer-events:none;
+}
+.item.done .chk{background:var(--accent);border-color:var(--accent)}
+.item.just-checked .chk{animation:chkBounce .4s cubic-bezier(.34,1.7,.64,1)}
+.item.just-checked .chk::after{animation:chkRipple .5s ease-out forwards}
+@keyframes chkBounce{
+  0%{transform:scale(1)}
+  40%{transform:scale(.75)}
+  70%{transform:scale(1.18)}
+  90%{transform:scale(.95)}
+  100%{transform:scale(1)}
+}
+@keyframes chkRipple{
+  0%{opacity:.6;transform:scale(.6)}
+  100%{opacity:0;transform:scale(1.8)}
+}
+.chk-svg{
+  opacity:0;transform:scale(0) rotate(-20deg);
+  transition:opacity .18s,transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+.item.done .chk-svg{opacity:1;transform:scale(1) rotate(0)}
+
+/* Category icon */
+.item-cat-ico{
+  font-size:20px;flex-shrink:0;
+  width:34px;height:34px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--surface2);border-radius:9px;
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1),opacity .2s;
+}
+
+/* Item info */
+.iinfo{flex:1;min-width:0}
+.iname{font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .2s,text-decoration .2s}
+.isub{font-size:12px;color:var(--soft);margin-top:2px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.by-tag{font-size:11px;color:var(--am);font-weight:500}
+.price-tag{font-size:12px;color:var(--ghost)}
+.alt-tag{font-size:11px;color:var(--ghost)}
+
+/* ── Qty control — spring bounce ── */
+.qty{
+  display:flex;align-items:center;gap:6px;
+  background:var(--surface2);border-radius:100px;
+  padding:4px 8px;flex-shrink:0;
+}
+.qb{
+  width:24px;height:24px;border-radius:50%;
+  border:none;background:var(--surface);color:var(--ink);
+  font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--sh);font-weight:300;
+  flex-shrink:0;
+  transition:transform .1s;
+  -webkit-tap-highlight-color:transparent;
+}
+.qb:active{transform:scale(.82)}
+.qn{
+  font-size:14px;font-weight:500;min-width:20px;text-align:center;
+  display:inline-block;
+  transition:transform .01s; /* JS handles spring */
+}
+.qn.spring{animation:numSpring .4s cubic-bezier(.34,1.7,.64,1)}
+@keyframes numSpring{
+  0%{transform:scale(1)}
+  25%{transform:scale(1.5)}
+  60%{transform:scale(.92)}
+  80%{transform:scale(1.06)}
+  100%{transform:scale(1)}
+}
+.qn.spring-down{animation:numSpringDown .35s cubic-bezier(.34,1.7,.64,1)}
+@keyframes numSpringDown{
+  0%{transform:scale(1)}
+  25%{transform:scale(.65)}
+  60%{transform:scale(1.08)}
+  80%{transform:scale(.97)}
+  100%{transform:scale(1)}
+}
+
+/* Done toggle */
+.done-toggle{display:flex;align-items:center;gap:10px;padding:12px 24px;cursor:pointer;background:var(--surface2);border-bottom:1px solid var(--line)}
+.done-toggle span{font-size:12px;color:var(--soft);font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.done-toggle .ln{flex:1;height:1px;background:var(--line)}
+
+/* ── All done celebration ── */
+.alldone{text-align:center;padding:40px 32px;color:var(--soft);position:relative;overflow:hidden}
+.alldone-ico{font-size:56px;margin-bottom:12px;display:inline-block;animation:bigPop .5s cubic-bezier(.34,1.7,.64,1) both}
+@keyframes bigPop{from{transform:scale(0) rotate(-15deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.alldone-ttl{font-family:'Playfair Display',serif;font-size:24px;color:var(--ink);margin-bottom:8px;animation:fadeSlideUp .4s .15s ease both}
+.alldone-sub{font-size:14px;line-height:1.6;animation:fadeSlideUp .4s .25s ease both}
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.reset-btn{margin-top:20px;padding:12px 28px;background:var(--al);color:var(--accent);border:none;border-radius:100px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;animation:fadeSlideUp .4s .35s ease both;transition:transform .15s}
+.reset-btn:active{transform:scale(.96)}
+
+/* Confetti canvas */
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:500}
+
+/* Empty */
+.empty{text-align:center;padding:60px 32px;color:var(--soft)}
+.empty-ico{font-size:44px;margin-bottom:14px;opacity:.3}
+.empty-ttl{font-family:'Playfair Display',serif;font-size:20px;color:var(--ink);margin-bottom:8px}
+.empty-sub{font-size:14px;line-height:1.6}
+
+/* ── FAB ── */
+.fab-wrap{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;padding:12px 20px max(24px,env(safe-area-inset-bottom));background:linear-gradient(to top,var(--surface) 65%,transparent);z-index:100;transition:background .3s}
+.qadd{display:flex;align-items:center;gap:8px;background:var(--surface);border:1.5px solid var(--line);border-radius:100px;padding:6px 6px 6px 18px;box-shadow:var(--sh2);transition:background .3s,border-color .3s,box-shadow .2s}
+.qadd:focus-within{border-color:var(--am);box-shadow:0 4px 24px rgba(26,25,22,.16),0 0 0 3px var(--al)}
+.qi{flex:1;border:none;outline:none;font-size:15px;font-family:inherit;color:var(--ink);background:transparent}
+.qi::placeholder{color:var(--ghost)}
+.qmore{width:38px;height:38px;border-radius:50%;background:var(--surface2);border:none;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;color:var(--soft);flex-shrink:0;transition:transform .15s}
+.qmore:active{transform:scale(.88) rotate(20deg)}
+.qadd-btn{background:var(--ink);color:var(--bg);border:none;border-radius:100px;padding:10px 20px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;white-space:nowrap;transition:transform .15s cubic-bezier(.34,1.56,.64,1),background .3s;flex-shrink:0}
+.qadd-btn:active{transform:scale(.92)}
+
+/* ── Sheets ── */
+.ovl{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;opacity:0;pointer-events:none;transition:opacity .28s;backdrop-filter:blur(3px)}
+.ovl.open{opacity:1;pointer-events:all}
+.sheet{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(102%);width:100%;max-width:430px;background:var(--surface);border-radius:24px 24px 0 0;z-index:201;padding:12px 24px max(36px,env(safe-area-inset-bottom));transition:transform .32s cubic-bezier(.32,.72,0,1),background .3s;max-height:90dvh;overflow-y:auto}
+.sheet.open{transform:translateX(-50%) translateY(0)}
+.handle{width:36px;height:4px;background:var(--line);border-radius:100px;margin:0 auto 22px}
+.stitle{font-family:'Playfair Display',serif;font-size:22px;font-weight:400;margin-bottom:20px}
+.flbl{font-size:11px;letter-spacing:.10em;text-transform:uppercase;color:var(--soft);font-weight:500;margin-bottom:8px}
+.finp{width:100%;padding:13px 16px;border:1.5px solid var(--line);border-radius:10px;font-size:16px;font-family:inherit;color:var(--ink);background:var(--surface2);outline:none;transition:border-color .18s,background .3s,box-shadow .18s;-webkit-appearance:none}
+.finp:focus{border-color:var(--accent);background:var(--surface);box-shadow:0 0 0 3px var(--al)}
+.fg{margin-bottom:16px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:8px 14px;border-radius:100px;font-size:13px;cursor:pointer;border:1.5px solid var(--line);background:var(--surface2);color:var(--soft);font-family:inherit;transition:all .18s cubic-bezier(.34,1.4,.64,1)}
+.chip.on{background:var(--al);border-color:var(--am);color:var(--accent);font-weight:500;transform:scale(1.05)}
+.srow{display:flex;gap:12px}
+.srow .fg{flex:1}
+.sbtn{width:100%;padding:15px;background:var(--ink);color:var(--bg);border:none;border-radius:10px;font-size:16px;font-weight:500;font-family:inherit;cursor:pointer;margin-top:6px;transition:transform .15s cubic-bezier(.34,1.56,.64,1),background .3s}
+.sbtn:active{transform:scale(.97)}
+.trow{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-top:1px solid var(--line)}
+.trow-lbl{font-size:15px}
+.trow-sub{font-size:12px;color:var(--soft);margin-top:1px}
+.sw{width:44px;height:26px;border-radius:100px;background:var(--ghost);position:relative;cursor:pointer;transition:background .25s;flex-shrink:0;border:none}
+.sw.on{background:var(--accent)}
+.sw::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;left:3px;transition:left .25s cubic-bezier(.34,1.4,.64,1);box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.sw.on::after{left:21px}
+.dbtn{width:100%;padding:14px;border:1.5px solid var(--wl);background:var(--wl);color:var(--warn);border-radius:10px;font-size:15px;font-family:inherit;cursor:pointer;margin-top:10px;transition:transform .12s}
+.dbtn:active{transform:scale(.98)}
+
+/* Category picker */
+.cat-picker{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px}
+.cat-tile{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface2);cursor:pointer;transition:all .2s cubic-bezier(.34,1.4,.64,1);font-family:inherit}
+.cat-tile:active{transform:scale(.9)}
+.cat-tile.on{border-color:var(--am);background:var(--al);transform:scale(1.04)}
+.cat-tile-ico{font-size:26px;line-height:1;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.cat-tile.on .cat-tile-ico{transform:scale(1.15)}
+.cat-tile-lbl{font-size:10px;font-weight:500;color:var(--soft);letter-spacing:.02em;text-align:center;line-height:1.2}
+.cat-tile.on .cat-tile-lbl{color:var(--accent)}
+
+/* Share */
+.share-card{background:var(--surface2);border-radius:14px;padding:20px;margin-bottom:16px;text-align:center}
+.share-code{font-family:'Playfair Display',serif;font-size:42px;letter-spacing:.15em;color:var(--ink);display:block;margin:8px 0 4px}
+.share-sub{font-size:13px;color:var(--soft)}
+.share-link-btn{font-family:inherit;font-size:13px;color:var(--accent);background:var(--al);padding:10px 16px;border-radius:8px;margin:12px 0 0;display:block;cursor:pointer;border:none;width:100%;text-align:center;transition:transform .12s}
+.share-link-btn:active{transform:scale(.98)}
+.share-methods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.sm{padding:14px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface2);display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;font-family:inherit;transition:transform .15s cubic-bezier(.34,1.4,.64,1)}
+.sm:active{transform:scale(.94)}
+.sm-ico{font-size:22px}
+.sm-lbl{font-size:12px;font-weight:500;color:var(--ink)}
+.sm-sub{font-size:11px;color:var(--ghost)}
+
+/* History */
+.hitem{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.hitem:last-child{border:none}
+.hname{font-size:15px;flex:1}
+.hmeta{font-size:12px;color:var(--ghost);margin-top:2px}
+.hreuse{font-size:12px;color:var(--accent);font-weight:500;cursor:pointer;background:var(--al);padding:5px 12px;border-radius:100px;border:none;font-family:inherit;transition:transform .15s}
+.hreuse:active{transform:scale(.93)}
+
+/* Planner / templates */
+.planner{flex:1;overflow-y:auto;background:var(--bg);scrollbar-width:none;padding:20px 20px 140px;transition:background .3s}
+.planner::-webkit-scrollbar{display:none}
+.planner-header{padding:0 4px 20px}
+.planner-title{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:6px}
+.planner-sub{font-size:13px;color:var(--soft);line-height:1.5}
+.week-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+.day-card{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;transition:transform .18s cubic-bezier(.34,1.4,.64,1),border-color .18s;position:relative}
+.day-card:active{transform:scale(.96)}
+.day-card.has-items{border-color:var(--am)}
+.day-card.today{border-color:var(--accent);background:var(--al)}
+.day-name{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin-bottom:6px}
+.day-card.today .day-name{color:var(--accent)}
+.day-items{font-size:13px;color:var(--ink);line-height:1.7}
+.day-empty{font-size:13px;color:var(--ghost);font-style:italic}
+.day-count{position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.tmpl-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin-bottom:12px;padding:0 4px}
+.tmpl-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.tmpl-card{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:transform .18s cubic-bezier(.34,1.4,.64,1)}
+.tmpl-card:active{transform:scale(.98)}
+.tmpl-ico{font-size:28px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--surface2);border-radius:10px;flex-shrink:0}
+.tmpl-info{flex:1;min-width:0}
+.tmpl-name{font-size:15px;font-weight:500}
+.tmpl-desc{font-size:12px;color:var(--soft);margin-top:2px}
+.tmpl-count{font-size:12px;color:var(--ghost);white-space:nowrap}
+.tmpl-add{width:32px;height:32px;border-radius:50%;background:var(--al);border:none;color:var(--accent);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s cubic-bezier(.34,1.56,.64,1)}
+.tmpl-add:active{transform:scale(.85) rotate(15deg)}
+.day-sh-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.day-sh-item:last-child{border:none}
+.day-sh-add{display:flex;gap:8px;margin-top:12px}
+.day-sh-add .finp{flex:1}
+.day-sh-addbtn{padding:12px 16px;background:var(--ink);color:var(--bg);border:none;border-radius:10px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;white-space:nowrap}
+.add-to-list-btn{width:100%;padding:14px;background:var(--al);color:var(--accent);border:none;border-radius:10px;font-size:15px;font-weight:500;font-family:inherit;cursor:pointer;margin-top:16px;transition:transform .15s}
+.add-to-list-btn:active{transform:scale(.98)}
+
+/* Toast */
+#toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%) translateY(0);background:var(--ink);color:var(--bg);padding:11px 22px;border-radius:100px;font-size:14px;font-weight:500;z-index:9999;opacity:0;transition:opacity .22s,transform .22s cubic-bezier(.34,1.4,.64,1),background .3s;pointer-events:none;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.hide{opacity:0;transform:translateX(-50%) translateY(8px)}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+
+<!-- Onboarding -->
+<div id="onboard">
+  <div class="ob-slides" id="obSlides">
+    <div class="ob-slide"><div class="ob-illo">🛒</div><div class="ob-tag">Velkommen til Kurv</div><div class="ob-h">Handlelistene dine, elegant og enkelt</div><div class="ob-p">Hold oversikt, handle smartere — gjør det til en glede, ikke en plikt.</div></div>
+    <div class="ob-slide"><div class="ob-illo">🗺</div><div class="ob-tag">Handlerute</div><div class="ob-h">Sortert etter butikk og avdeling</div><div class="ob-p">Kurv organiserer varene dine slik du møter dem i butikken.</div></div>
+    <div class="ob-slide"><div class="ob-illo">✨</div><div class="ob-tag">Detaljer som gleder</div><div class="ob-h">En app som føles som den er laget for deg</div><div class="ob-p">Myke animasjoner og gjennomtenkte detaljer i hvert eneste trykk.</div></div>
+    <div class="ob-slide"><div class="ob-illo">👫</div><div class="ob-tag">Del med noen</div><div class="ob-h">Handle sammen, uansett hvor dere er</div><div class="ob-p" style="margin-bottom:16px">Inviter samboer med én lenke.</div><input class="finp" id="obName" placeholder="Hva heter du?" autocomplete="given-name" onkeydown="if(event.key==='Enter')finishOB()"></div>
+  </div>
+  <div class="ob-bottom">
+    <div class="ob-dots" id="obDots"></div>
+    <button class="ob-btn" id="obBtn" onclick="obNext()">Fortsett</button>
+    <button class="ob-skip" onclick="finishOB()">Hopp over</button>
+  </div>
+</div>
+
+<!-- App -->
+<div id="app" style="display:none">
+  <div class="hdr">
+    <div class="hdr-top">
+      <div><div class="eyebrow">Handleliste</div><div class="app-title">Kurv</div></div>
+      <div>
+        <div class="hdr-actions">
+          <button class="icon-btn" id="darkToggle" onclick="toggleDark()">🌙</button>
+          <div class="avatars">
+            <div class="av you" id="youAv">D</div>
+            <div class="av them">S<div class="ndot" id="ndot"></div></div>
+            <div class="av plus" onclick="openShare()">+</div>
+          </div>
+        </div>
+        <div class="pstatus" id="pstatus">Sofie aktiv for 3 min siden</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-tabs">
+    <button class="ntab on" id="ntab-list" onclick="switchView('list')"><div class="ntab-ico">🛒</div><div class="ntab-lbl">Liste</div></button>
+    <button class="ntab" id="ntab-planner" onclick="switchView('planner')"><div class="ntab-ico">📅</div><div class="ntab-lbl">Uke</div></button>
+    <button class="ntab" id="ntab-templates" onclick="switchView('templates')"><div class="ntab-ico">✨</div><div class="ntab-lbl">Maler</div></button>
+    <button class="ntab" id="ntab-history" onclick="openHist()"><div class="ntab-ico">🕐</div><div class="ntab-lbl">Historikk</div></button>
+  </div>
+
+  <!-- List view -->
+  <div id="view-list" style="display:flex;flex-direction:column;flex:1;overflow:hidden;min-height:0">
+    <div class="tabs-wrap"><div class="tabs" id="tabs"></div></div>
+    <div class="vbar">
+      <div class="vbar-l">🗺 Butikk → kategori</div>
+      <button class="vbar-btn" onclick="showToast('Sortering aktiv ✓')">Endre</button>
+    </div>
+    <div class="sumbar">
+      <span class="sum-count" id="sc">0 igjen</span>
+      <button class="mark-all-btn" id="markAllBtn" onclick="markAllDone()">Merk alle ✓</button>
+      <div class="sum-right">
+        <span class="sum-price" id="sp" onclick="openHist()"></span>
+        <span class="sum-done" id="sd" onclick="openHist()"></span>
+      </div>
+    </div>
+    <div class="list" id="list"></div>
+  </div>
+
+  <div id="view-planner" style="display:none;flex:1;overflow:hidden;min-height:0"><div class="planner" id="planner"></div></div>
+  <div id="view-templates" style="display:none;flex:1;overflow:hidden;min-height:0"><div class="planner" id="templates-wrap"></div></div>
+
+  <div class="fab-wrap" id="fabWrap">
+    <div class="qadd">
+      <input class="qi" id="qi" placeholder="Legg til vare…" autocomplete="off" onkeydown="if(event.key==='Enter')quickAdd()">
+      <button class="qmore" onclick="openAdd()">⋯</button>
+      <button class="qadd-btn" onclick="quickAdd()">Legg til</button>
+    </div>
+  </div>
+</div>
+
+<!-- Sheets -->
+<div class="ovl" id="dOvl" onclick="closeDet()"></div>
+<div class="sheet" id="dSh"><div class="handle"></div><div class="stitle" id="dtitle"></div><div id="dbody"></div></div>
+
+<div class="ovl" id="aOvl" onclick="closeAdd()"></div>
+<div class="sheet" id="aSh">
+  <div class="handle"></div><div class="stitle">Ny vare</div>
+  <div class="fg"><div class="flbl">Varenavn</div><input class="finp" id="nname" placeholder="f.eks. Økologisk melk" autocomplete="off"></div>
+  <div class="srow">
+    <div class="fg"><div class="flbl">Antall</div><input class="finp" id="nqty" type="number" value="1" min="1" style="text-align:center"></div>
+    <div class="fg"><div class="flbl">Ca. pris (kr)</div><input class="finp" id="nprice" type="number" placeholder="–" min="0" style="text-align:center"></div>
+  </div>
+  <div class="fg"><div class="flbl">Kategori</div><div class="cat-picker" id="catPicker"></div></div>
+  <div class="fg"><div class="flbl">Butikk</div><div class="chips" id="schips"></div></div>
+  <div class="fg"><div class="flbl">Alternativ (hvis utsolgt)</div><input class="finp" id="nalt" placeholder="f.eks. et annet merke" autocomplete="off"></div>
+  <div class="trow">
+    <div><div class="trow-lbl">Gjentas ukentlig</div><div class="trow-sub">↻ Legges til automatisk</div></div>
+    <button class="sw" id="rsw" onclick="this.classList.toggle('on')"></button>
+  </div>
+  <button class="sbtn" onclick="addItem()">Legg til vare</button>
+</div>
+
+<div class="ovl" id="shOvl" onclick="closeShare()"></div>
+<div class="sheet" id="shSh">
+  <div class="handle"></div><div class="stitle">Del liste</div>
+  <div class="share-card">
+    <div style="font-size:13px;color:var(--soft)">Inviter noen til å redigere</div>
+    <div class="share-code">K7-4X</div>
+    <div class="share-sub">Skriv inn koden i Kurv-appen</div>
+    <button class="share-link-btn" onclick="copyLink()">kurv.app/join/K7-4X · Trykk for å kopiere</button>
+  </div>
+  <div class="share-methods">
+    <button class="sm" onclick="shareM('SMS')"><div class="sm-ico">💬</div><div class="sm-lbl">Send SMS</div><div class="sm-sub">iMessage</div></button>
+    <button class="sm" onclick="copyLink()"><div class="sm-ico">🔗</div><div class="sm-lbl">Kopier lenke</div><div class="sm-sub">Lim inn</div></button>
+    <button class="sm" onclick="shareM('QR-kode')"><div class="sm-ico">⬛</div><div class="sm-lbl">QR-kode</div><div class="sm-sub">Skann</div></button>
+    <button class="sm" onclick="shareM('E-post')"><div class="sm-ico">✉️</div><div class="sm-lbl">E-post</div><div class="sm-sub">Inviter</div></button>
+  </div>
+  <div style="margin-top:18px;padding:14px;background:var(--surface2);border-radius:10px;font-size:13px;color:var(--soft);line-height:1.6">
+    📱 <strong style="color:var(--ink)">Installer på iPhone:</strong> Safari → Del → «Legg til på hjemskjerm»
+  </div>
+</div>
+
+<div class="ovl" id="hOvl" onclick="closeHist()"></div>
+<div class="sheet" id="hSh"><div class="handle"></div><div class="stitle">Tidligere handlet</div><div id="hbody"></div></div>
+<div class="ovl" id="dayOvl" onclick="closeDaySh()"></div>
+<div class="sheet" id="daySh"><div class="handle"></div><div class="stitle" id="dayShTitle"></div><div id="dayShBody"></div></div>
+
+<div id="toast"></div>
+
+<script>
+// ─── Constants ───────────────────────────────────
+const CATS=[
+  {key:'Frukt & grønt',ico:'🥦',lbl:'Frukt &\ngrønt'},
+  {key:'Meieri',ico:'🥛',lbl:'Meieri'},
+  {key:'Bakeri',ico:'🍞',lbl:'Bakeri'},
+  {key:'Kjøtt & fisk',ico:'🐟',lbl:'Kjøtt &\nfisk'},
+  {key:'Tørrmat',ico:'🥫',lbl:'Tørrmat'},
+  {key:'Drikke',ico:'🧃',lbl:'Drikke'},
+  {key:'Hushold',ico:'🧹',lbl:'Hushold'},
+  {key:'Annet',ico:'📦',lbl:'Annet'},
+];
+const ICO=Object.fromEntries(CATS.map(c=>[c.key,c.ico]));
+const STORES=['Meny','Rema 1000','Kiwi'];
+const SORD=['Meny','Rema 1000','Kiwi','Alle'];
+const CORD=CATS.map(c=>c.key);
+const DAYS=['Mandag','Tirsdag','Onsdag','Torsdag','Fredag','Lørdag','Søndag'];
+const TODAY_IDX=(new Date().getDay()+6)%7;
+const TEMPLATES=[
+  {id:'middag',ico:'🍝',name:'Ukesmiddager',desc:'7 middagsretter med ingredienser',items:['Pasta penne','Tomatboks','Kyllingfilet','Ris','Laks','Brokkoli','Løk','Hvitløk','Paprika','Rømme','Kjøttdeig']},
+  {id:'frokost',ico:'🥣',name:'Frokost & lunsj',desc:'Alt til en god start på dagen',items:['Havregryn','Melk','Bananer','Egg','Brød','Smør','Ost','Skinke','Appelsinjuice']},
+  {id:'baking',ico:'🧁',name:'Bakekos',desc:'Kaker og boller',items:['Hvetemel','Sukker','Smør','Egg','Gjær','Melk','Vaniljesukker','Bakepulver','Sjokolade']},
+  {id:'rengjoring',ico:'🧹',name:'Rengjøring',desc:'Husholdningsartikler',items:['Oppvaskmiddel','Toalettpapir','Tørkepapir','Allrengjøring','Wc-rens','Søppelsekker']},
+  {id:'grill',ico:'🍖',name:'Grillkveld',desc:'Alt til en perfekt grillkveld',items:['Pølser','Burgerbuns','Kyllingvinger','Grillkrydder','Maiskolber','Coleslaw','Ketchup','Sennep']},
+];
+
+// ─── State ───────────────────────────────────────
+let AL=0,showDone=false,snew='',selectedCat='Annet',nid=100,myName='D',darkMode=false,currentView='list';
+let items=[],weekPlan={},hist=[],LISTS=[];
+const DEFS={
+  items:[
+    {id:1,name:'Helmelk 1L',qty:2,cat:'Meieri',store:'Meny',done:false,alt:'Lettmelk',list:0,price:25,recur:true,by:'S'},
+    {id:2,name:'Grovbrød',qty:1,cat:'Bakeri',store:'Meny',done:false,alt:'Knekkebrød',list:0,price:42,recur:true,by:'D'},
+    {id:3,name:'Laksefilet',qty:1,cat:'Kjøtt & fisk',store:'Meny',done:false,alt:'Ørretfilet',list:0,price:89,recur:false,by:'D'},
+    {id:4,name:'Appelsinjuice',qty:1,cat:'Drikke',store:'Meny',done:false,alt:'',list:0,price:36,recur:false,by:'S'},
+    {id:5,name:'Egg 12pk',qty:1,cat:'Meieri',store:'Rema 1000',done:false,alt:'',list:0,price:38,recur:true,by:'D'},
+    {id:6,name:'Kyllingfilet',qty:2,cat:'Kjøtt & fisk',store:'Rema 1000',done:false,alt:'Kalkun',list:0,price:75,recur:false,by:'S'},
+    {id:7,name:'Pasta penne',qty:2,cat:'Tørrmat',store:'Rema 1000',done:false,alt:'Spaghetti',list:0,price:18,recur:false,by:'D'},
+    {id:8,name:'Epler',qty:6,cat:'Frukt & grønt',store:'Kiwi',done:false,alt:'Pærer',list:0,price:5,recur:false,by:'D'},
+    {id:9,name:'Bananer',qty:1,cat:'Frukt & grønt',store:'Kiwi',done:false,alt:'',list:0,price:15,recur:true,by:'S'},
+    {id:10,name:'Rødvin',qty:1,cat:'Drikke',store:'Kiwi',done:false,alt:'',list:0,price:130,recur:false,by:'S'},
+    {id:11,name:'Fløte',qty:1,cat:'Meieri',store:'Rema 1000',done:false,alt:'Crème fraîche',list:1,price:29,recur:false,by:'D'},
+    {id:12,name:'Tomat på boks',qty:3,cat:'Tørrmat',store:'Kiwi',done:false,alt:'',list:1,price:14,recur:false,by:'S'},
+    {id:13,name:'Oppvaskmiddel',qty:1,cat:'Hushold',store:'Kiwi',done:false,alt:'',list:2,price:45,recur:true,by:'D'},
+    {id:14,name:'Toalettpapir',qty:2,cat:'Hushold',store:'Rema 1000',done:false,alt:'',list:2,price:59,recur:true,by:'D'},
+  ],
+  lists:['Ukeshandel','Middag lørdag','Hushold'],
+  week:{0:['Pasta bolognese'],1:['Laksemiddag'],2:['Tacos'],3:[],4:['Hjemmelaget pizza'],5:['Grillmat'],6:['Søndagssteik']},
+  hist:[{name:'Brie',date:'18. mars',store:'Meny',cat:'Meieri',price:89},{name:'Hvitvin',date:'11. mars',store:'Kiwi',cat:'Drikke',price:120}]
+};
+
+// ─── Persistence ─────────────────────────────────
+function save(){try{localStorage.setItem('k_i',JSON.stringify(items));localStorage.setItem('k_l',JSON.stringify(LISTS));localStorage.setItem('k_w',JSON.stringify(weekPlan));localStorage.setItem('k_h',JSON.stringify(hist));localStorage.setItem('k_d',darkMode?'1':'0');localStorage.setItem('k_n',myName);localStorage.setItem('k_id',String(nid));localStorage.setItem('k_al',String(AL))}catch(e){}}
+function load(){
+  try{
+    items=JSON.parse(localStorage.getItem('k_i')||'null')||DEFS.items.map(i=>({...i}));
+    const l=JSON.parse(localStorage.getItem('k_l')||'null')||DEFS.lists;
+    LISTS.length=0;l.forEach(x=>LISTS.push(x));
+    weekPlan=JSON.parse(localStorage.getItem('k_w')||'null')||{...DEFS.week};
+    hist=JSON.parse(localStorage.getItem('k_h')||'null')||[...DEFS.hist];
+    const dn=localStorage.getItem('k_d');if(dn!==null)darkMode=dn==='1';
+    const nm=localStorage.getItem('k_n');if(nm)myName=nm;
+    nid=Math.max(nid,...items.map(i=>i.id),parseInt(localStorage.getItem('k_id')||'0'))+1;
+    const al=localStorage.getItem('k_al');if(al!==null)AL=Math.min(parseInt(al),LISTS.length-1);
+  }catch(e){items=DEFS.items.map(i=>({...i}));LISTS.length=0;DEFS.lists.forEach(x=>LISTS.push(x));weekPlan={...DEFS.week};hist=[...DEFS.hist]}
+}
+load();
+
+// ─── Dark mode ────────────────────────────────────
+function applyTheme(){
+  document.documentElement.setAttribute('data-theme',darkMode?'dark':'light');
+  document.getElementById('darkToggle').textContent=darkMode?'☀️':'🌙';
+  document.getElementById('themeColor').setAttribute('content',darkMode?'#111110':'#FAF8F5');
+}
+function toggleDark(){darkMode=!darkMode;applyTheme();save();showToast(darkMode?'Mørk modus 🌙':'Lys modus ☀️')}
+applyTheme();
+
+// ─── PWA ─────────────────────────────────────────
+if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
+
+// ─── Confetti ─────────────────────────────────────
+function launchConfetti(){
+  const c=document.getElementById('confetti');
+  const ctx=c.getContext('2d');
+  c.width=window.innerWidth;c.height=window.innerHeight;
+  const COLORS=['#52B788','#2D6A4F','#D8EFE4','#E07A5F','#F4A261','#FFD166','#A8DADC'];
+  const pieces=Array.from({length:90},()=>({
+    x:Math.random()*c.width,y:-10-Math.random()*80,
+    r:4+Math.random()*6,
+    col:COLORS[Math.floor(Math.random()*COLORS.length)],
+    vx:(Math.random()-.5)*4,vy:2+Math.random()*4,
+    rot:Math.random()*360,vr:(Math.random()-.5)*8,
+    shape:Math.random()>.5?'rect':'circle',
+    w:6+Math.random()*8,h:3+Math.random()*5,
+    life:1
+  }));
+  let frame=0;
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    let alive=false;
+    pieces.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;p.vy+=.07;p.rot+=p.vr;p.life=Math.max(0,1-(p.y/(c.height*.9)));
+      if(p.y<c.height+20){alive=true}
+      ctx.save();ctx.globalAlpha=Math.min(1,p.life*2);ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.col;
+      if(p.shape==='circle'){ctx.beginPath();ctx.arc(0,0,p.r,0,Math.PI*2);ctx.fill()}
+      else{ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h)}
+      ctx.restore();
+    });
+    frame++;
+    if(alive&&frame<200)requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,c.width,c.height);
+  }
+  draw();
+}
+
+// ─── Onboarding ──────────────────────────────────
+let obP=0;
+function renderObDots(){
+  document.getElementById('obDots').innerHTML=Array.from({length:4},(_,i)=>`<div class="ob-dot${i===obP?' on':''}"></div>`).join('');
+  document.getElementById('obSlides').style.transform=`translateX(-${obP*100}%)`;
+  document.getElementById('obSlides').style.transition=obP===0?'none':'transform .35s cubic-bezier(.4,0,.2,1)';
+  document.getElementById('obBtn').textContent=obP===3?'Kom i gang!':'Fortsett';
+}
+function obNext(){if(obP<3){obP++;renderObDots();if(obP===3)setTimeout(()=>document.getElementById('obName')?.focus(),380)}else finishOB()}
+function finishOB(){
+  const n=document.getElementById('obName')?.value.trim();
+  if(n){myName=n[0].toUpperCase();save()}
+  document.getElementById('onboard').style.opacity='0';
+  document.getElementById('onboard').style.transition='opacity .4s';
+  setTimeout(()=>{
+    document.getElementById('onboard').style.display='none';
+    const app=document.getElementById('app');app.style.display='flex';app.style.flexDirection='column';
+    document.getElementById('youAv').textContent=myName;
+    localStorage.setItem('k_ob','1');render();
+  },400);
+}
+if(localStorage.getItem('k_ob')==='1'){
+  document.getElementById('onboard').style.display='none';
+  const app=document.getElementById('app');app.style.display='flex';app.style.flexDirection='column';
+  document.getElementById('youAv').textContent=myName;
+  renderObDots();
+}else renderObDots();
+
+// ─── View switch ─────────────────────────────────
+function switchView(v){
+  currentView=v;
+  ['list','planner','templates'].forEach(x=>{
+    const el=document.getElementById('view-'+x);if(el)el.style.display=x===v?'flex':'none';
+    const nt=document.getElementById('ntab-'+x);if(nt)nt.classList.toggle('on',x===v);
+  });
+  document.getElementById('ntab-history').classList.remove('on');
+  document.getElementById('fabWrap').style.display=v==='list'?'':'none';
+  if(v==='planner')renderPlanner();
+  if(v==='templates')renderTemplates();
+}
+
+// ─── Tabs ─────────────────────────────────────────
+function renderTabs(){
+  document.getElementById('tabs').innerHTML=
+    LISTS.map((l,i)=>`<button class="tab${i===AL?' on':''}" onclick="swList(${i})">${l}</button>`).join('')+
+    `<button class="tab add" onclick="addList()">＋</button>`;
+}
+function swList(i){AL=i;showDone=false;save();renderList();updateSum()}
+function addList(){const n=prompt('Navn på ny liste:');if(n&&n.trim()){LISTS.push(n.trim());AL=LISTS.length-1;save();render()}}
+
+// ─── List render ──────────────────────────────────
+function renderList(){
+  const el=document.getElementById('list');
+  const active=items.filter(it=>it.list===AL&&!it.done);
+  const done=items.filter(it=>it.list===AL&&it.done);
+  if(!active.length&&!done.length){
+    el.innerHTML=`<div class="empty"><div class="empty-ico">🛒</div><div class="empty-ttl">Listen er tom</div><div class="empty-sub">Skriv en vare nedenfor og trykk enter</div></div>`;
+    return;
+  }
+  if(!active.length){
+    el.innerHTML=`<div class="alldone"><div class="alldone-ico">🎉</div><div class="alldone-ttl">Alt er handlet!</div><div class="alldone-sub">Godt jobbet! Dere fikk alt!</div><button class="reset-btn" onclick="resetList()">Start listen på nytt</button></div>
+    <div class="done-toggle" onclick="toggleDone()"><span class="ln"></span><span>${showDone?'▲':'▼'} ${done.length} handlet</span><span class="ln"></span></div>
+    ${showDone?done.map(it=>wrapItem(it)).join(''):''}`;
+    setTimeout(addSwipe,50);return;
+  }
+  const smap={};
+  active.forEach(it=>{const s=it.store||'Alle';if(!smap[s])smap[s]={};if(!smap[s][it.cat])smap[s][it.cat]=[];smap[s][it.cat].push(it)});
+  let html='';
+  SORD.forEach(s=>{
+    if(!smap[s])return;
+    const si=Object.values(smap[s]).flat();
+    html+=`<div><div class="store-hdr"><span class="sbadge">${s}</span><span class="scount">${si.length} ${si.length===1?'vare':'varer'}</span></div>`;
+    CORD.forEach(c=>{
+      if(!smap[s][c])return;
+      html+=`<div class="cat-row"><span class="cat-lbl">${ICO[c]||'📦'} ${c}</span></div>`;
+      smap[s][c].forEach(it=>{html+=wrapItem(it)});
+    });
+    html+=`</div>`;
+  });
+  if(done.length){
+    html+=`<div class="done-toggle" onclick="toggleDone()"><span class="ln"></span><span>${showDone?'▲':'▼'} ${done.length} handlet</span><span class="ln"></span></div>`;
+    if(showDone)done.forEach(it=>{html+=wrapItem(it)});
+  }
+  el.innerHTML=html;
+  setTimeout(addSwipe,50);
+}
+
+function wrapItem(it){
+  const catObj=CATS.find(c=>c.key===it.cat)||CATS[7];
+  return`<div class="item-wrap" id="w${it.id}">
+    <div class="swipe-bg">
+      <div class="swipe-del-lbl" id="sdl${it.id}">
+        <span class="d-ico">🗑</span>
+        <span class="d-txt">Slett</span>
+      </div>
+    </div>
+    <div class="item${it.done?' done':''}${it.recur?' recur':''}" id="i${it.id}" onclick="openDet(${it.id})">
+      <button class="chk" id="chk${it.id}" onclick="toggle(${it.id});event.stopPropagation()">
+        <svg class="chk-svg" width="12" height="10" viewBox="0 0 12 10" fill="none">
+          <path d="M1 5L4.5 8.5L11 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="item-cat-ico">${catObj.ico}</div>
+      <div class="iinfo">
+        <div class="iname">${it.name}</div>
+        <div class="isub">
+          ${it.by&&it.by!==myName?`<span class="by-tag">+ ${it.by}</span>`:''}
+          ${it.price?`<span class="price-tag">${it.qty>1?it.qty+'×':''}${it.price} kr</span>`:''}
+          ${it.alt?`<span class="alt-tag">↪ ${it.alt}</span>`:''}
+        </div>
+      </div>
+      <div class="qty" onclick="event.stopPropagation()">
+        <button class="qb" onclick="chQty(${it.id},-1,this)">−</button>
+        <span class="qn" id="qn${it.id}">${it.qty}</span>
+        <button class="qb" onclick="chQty(${it.id},1,this)">+</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggleDone(){showDone=!showDone;renderList()}
+
+// ─── Swipe to delete (physical feel) ─────────────
+function addSwipe(){
+  document.querySelectorAll('.item').forEach(el=>{
+    let sx=0,sy=0,dx=0,tracking=false,decided=false,horizontal=false;
+    const id=parseInt(el.id.slice(1));
+    const lbl=document.getElementById('sdl'+id);
+    const SNAP=-90;
+
+    el.addEventListener('touchstart',e=>{
+      sx=e.touches[0].clientX;sy=e.touches[0].clientY;
+      dx=0;tracking=true;decided=false;horizontal=false;
+      el.style.transition='none';
+    },{passive:true});
+
+    el.addEventListener('touchmove',e=>{
+      if(!tracking)return;
+      const cx=e.touches[0].clientX,cy=e.touches[0].clientY;
+      const ddx=cx-sx,ddy=cy-sy;
+      if(!decided){
+        if(Math.abs(ddx)>Math.abs(ddy)+6){decided=true;horizontal=true}
+        else if(Math.abs(ddy)>8){decided=true;horizontal=false}
+        else return;
+      }
+      if(!horizontal)return;
+      e.preventDefault();
+      dx=Math.min(0,cx-sx); // left only
+      el.style.transform=`translateX(${dx}px)`;
+      // Reveal delete label based on progress
+      const p=Math.min(1,Math.abs(dx)/Math.abs(SNAP));
+      if(lbl){lbl.style.opacity=p;lbl.style.transform=`scale(${.7+p*.3})`}
+    },{passive:false});
+
+    el.addEventListener('touchend',()=>{
+      tracking=false;
+      if(!horizontal){el.style.transform='';return}
+      if(dx<SNAP){
+        // Full delete
+        el.style.transition='transform .28s cubic-bezier(.4,0,1,1),opacity .22s';
+        el.style.transform='translateX(-110%)';el.style.opacity='0';
+        setTimeout(()=>{items=items.filter(i=>i.id!==id);save();renderList();updateSum()},280);
+        showToast('Vare fjernet');
+      } else {
+        // Snap back with bounce
+        el.style.transition='transform .4s cubic-bezier(.34,1.4,.64,1)';
+        el.style.transform='translateX(0)';
+        if(lbl){lbl.style.opacity='0';lbl.style.transform='scale(.7)'}
+      }
+    });
+  });
+}
+
+// ─── Summary ──────────────────────────────────────
+function updateSum(){
+  const active=items.filter(it=>it.list===AL&&!it.done);
+  const done=items.filter(it=>it.list===AL&&it.done);
+  const total=active.reduce((s,it)=>s+(it.price||0)*it.qty,0);
+  const sc=document.getElementById('sc');
+  if(sc)sc.textContent=`${active.length} igjen`;
+  const sp=document.getElementById('sp');
+  if(sp)sp.textContent=total?`≈ ${total} kr`:'';
+  const sd=document.getElementById('sd');
+  if(sd)sd.textContent=done.length?`${done.length} ✓`:'';
+  const mb=document.getElementById('markAllBtn');
+  if(mb)mb.style.display=active.length?'':'none';
+}
+
+// ─── Toggle (with animation) ──────────────────────
+function toggle(id){
+  const it=items.find(i=>i.id===id);if(!it)return;
+  it.done=!it.done;
+  if(it.done){
+    hist.unshift({name:it.name,date:'I dag',store:it.store,cat:it.cat,price:it.price});
+    // Animate check in place before re-render
+    const row=document.getElementById('i'+id);
+    if(row){
+      row.classList.add('just-checked','done');
+      setTimeout(()=>{save();renderList();updateSum();checkAllDone();},380);
+      return;
+    }
+  }
+  save();renderList();updateSum();
+}
+
+function checkAllDone(){
+  const active=items.filter(it=>it.list===AL&&!it.done);
+  if(active.length===0){
+    setTimeout(()=>launchConfetti(),200);
+  }
+}
+
+function markAllDone(){
+  const active=items.filter(it=>it.list===AL&&!it.done);if(!active.length)return;
+  active.forEach(it=>{it.done=true;hist.unshift({name:it.name,date:'I dag',store:it.store,cat:it.cat,price:it.price})});
+  save();renderList();updateSum();
+  setTimeout(()=>launchConfetti(),100);
+  showToast(`${active.length} varer handlet ✓`);
+}
+function resetList(){items.filter(it=>it.list===AL).forEach(it=>it.done=false);showDone=false;save();renderList();updateSum()}
+
+// ─── Qty (spring bounce) ──────────────────────────
+function chQty(id,d,btn){
+  const it=items.find(i=>i.id===id);if(!it)return;
+  it.qty=Math.max(1,it.qty+d);
+  const el=document.getElementById('qn'+id);
+  if(el){
+    el.textContent=it.qty;
+    // Remove then re-add class to retrigger animation
+    el.classList.remove('spring','spring-down');
+    void el.offsetWidth; // reflow
+    el.classList.add(d>0?'spring':'spring-down');
+    el.addEventListener('animationend',()=>el.classList.remove('spring','spring-down'),{once:true});
+  }
+  // Button feedback
+  if(btn){btn.style.transform='scale(.78)';setTimeout(()=>btn.style.transform='',120)}
+  save();updateSum();
+}
+
+// ─── Quick add (slide in) ──────────────────────────
+function quickAdd(){
+  const inp=document.getElementById('qi');
+  const name=inp.value.trim();if(!name)return;
+  const newItem={id:nid++,name,qty:1,cat:selectedCat,store:'Alle',done:false,alt:'',list:AL,price:0,recur:false,by:myName};
+  items.unshift(newItem);
+  inp.value='';inp.focus();
+  save();renderList();updateSum();
+  // Mark new item for slide-in after render
+  const newEl=document.getElementById('i'+newItem.id);
+  if(newEl)newEl.classList.add('new-in');
+  showToast(`"${name}" lagt til ✓`);
+}
+
+// ─── Category picker ─────────────────────────────
+function renderCatPicker(targetId='catPicker',currentCat=selectedCat,onSelect=null){
+  const el=document.getElementById(targetId);if(!el)return;
+  el.innerHTML=CATS.map(c=>`
+    <button class="cat-tile${c.key===currentCat?' on':''}" onclick="(${onSelect||'selectCat'})('${c.key}','${targetId}',${!!onSelect})">
+      <span class="cat-tile-ico">${c.ico}</span>
+      <span class="cat-tile-lbl">${c.lbl}</span>
+    </button>`).join('');
+}
+function selectCat(key,targetId='catPicker'){
+  selectedCat=key;
+  document.querySelectorAll(`#${targetId} .cat-tile`).forEach((t,i)=>t.classList.toggle('on',CATS[i].key===key));
+}
+
+// ─── Add sheet ────────────────────────────────────
+function openAdd(){
+  document.getElementById('aOvl').classList.add('open');document.getElementById('aSh').classList.add('open');
+  renderCatPicker();renderSChips();
+  setTimeout(()=>document.getElementById('nname').focus(),360);
+}
+function closeAdd(){document.getElementById('aOvl').classList.remove('open');document.getElementById('aSh').classList.remove('open')}
+function renderSChips(){
+  document.getElementById('schips').innerHTML=
+    [...STORES,'Alle'].map(s=>`<button class="chip${s===snew||(s==='Alle'&&snew==='')?' on':''}" onclick="setS('${s}')">${s}</button>`).join('');
+}
+function setS(s){snew=s==='Alle'?'':s;renderSChips()}
+function addItem(){
+  const name=document.getElementById('nname').value.trim();if(!name)return;
+  const newItem={id:nid++,name,qty:parseInt(document.getElementById('nqty').value)||1,
+    cat:selectedCat,store:snew||'Alle',done:false,
+    alt:document.getElementById('nalt').value.trim(),list:AL,
+    price:parseFloat(document.getElementById('nprice').value)||0,
+    recur:document.getElementById('rsw').classList.contains('on'),by:myName};
+  items.unshift(newItem);
+  ['nname','nprice','nalt'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('nqty').value='1';document.getElementById('rsw').classList.remove('on');snew='';selectedCat='Annet';
+  save();closeAdd();renderList();updateSum();
+  setTimeout(()=>{const el=document.getElementById('i'+newItem.id);if(el)el.classList.add('new-in')},50);
+  showToast('Vare lagt til ✓');
+}
+
+// ─── Detail sheet ─────────────────────────────────
+function openDet(id){
+  const it=items.find(i=>i.id===id);if(!it)return;
+  document.getElementById('dtitle').textContent=it.name;
+  let detCat=it.cat;
+  document.getElementById('dbody').innerHTML=`
+    <div class="fg"><div class="flbl">Kategori</div><div class="cat-picker" id="dcp"></div></div>
+    <div class="fg"><div class="flbl">Alternativ (hvis utsolgt)</div><input class="finp" id="dalt" value="${it.alt||''}" placeholder="f.eks. et annet merke" autocomplete="off"></div>
+    <div class="fg"><div class="flbl">Ca. pris (kr)</div><input class="finp" id="dprice" type="number" value="${it.price||''}" placeholder="0" style="text-align:center"></div>
+    <div class="trow">
+      <div><div class="trow-lbl">Gjentas ukentlig</div><div class="trow-sub">↻ Legges til automatisk</div></div>
+      <button class="sw ${it.recur?'on':''}" id="dsw" onclick="this.classList.toggle('on')"></button>
+    </div>
+    <button class="sbtn" onclick="saveDet(${id})">Lagre endringer</button>
+    <button class="dbtn" onclick="delItem(${id})">Fjern fra listen</button>`;
+  renderCatPicker('dcp',it.cat);
+  // Wire up det cat picker
+  document.querySelectorAll('#dcp .cat-tile').forEach((t,i)=>{
+    t.onclick=()=>{it.cat=CATS[i].key;document.querySelectorAll('#dcp .cat-tile').forEach((x,j)=>x.classList.toggle('on',j===i))};
+  });
+  document.getElementById('dOvl').classList.add('open');document.getElementById('dSh').classList.add('open');
+}
+function saveDet(id){
+  const it=items.find(i=>i.id===id);if(!it)return;
+  it.alt=document.getElementById('dalt').value.trim();
+  it.price=parseFloat(document.getElementById('dprice').value)||0;
+  it.recur=document.getElementById('dsw').classList.contains('on');
+  save();closeDet();render();showToast('Lagret ✓');
+}
+function closeDet(){document.getElementById('dOvl').classList.remove('open');document.getElementById('dSh').classList.remove('open')}
+function delItem(id){items=items.filter(i=>i.id!==id);save();closeDet();render()}
+
+// ─── Share ────────────────────────────────────────
+function openShare(){document.getElementById('shOvl').classList.add('open');document.getElementById('shSh').classList.add('open')}
+function closeShare(){document.getElementById('shOvl').classList.remove('open');document.getElementById('shSh').classList.remove('open')}
+function copyLink(){try{navigator.clipboard.writeText('https://kurv.app/join/K7-4X')}catch(e){}showToast('Lenke kopiert! 🔗')}
+function shareM(m){showToast(`${m} åpnes… (demo)`);closeShare()}
+
+// ─── History ──────────────────────────────────────
+function openHist(){
+  document.getElementById('hbody').innerHTML=hist.length
+    ?hist.slice(0,20).map(h=>`<div class="hitem"><div style="flex:1"><div class="hname">${h.name}</div><div class="hmeta">${h.store||'–'} · ${h.date}</div></div><button class="hreuse" onclick="reuse('${h.name}','${h.store||'Alle'}','${h.cat||'Annet'}',${h.price||0})">+ Legg til</button></div>`).join('')
+    :'<div style="text-align:center;padding:40px;color:var(--ghost)">Ingen historikk ennå</div>';
+  document.getElementById('hOvl').classList.add('open');document.getElementById('hSh').classList.add('open');
+}
+function closeHist(){document.getElementById('hOvl').classList.remove('open');document.getElementById('hSh').classList.remove('open')}
+function reuse(name,store,cat,price){
+  const newItem={id:nid++,name,qty:1,cat,store,done:false,alt:'',list:AL,price,recur:false,by:myName};
+  items.unshift(newItem);save();closeHist();renderList();updateSum();
+  setTimeout(()=>{const el=document.getElementById('i'+newItem.id);if(el)el.classList.add('new-in')},50);
+  showToast(`"${name}" lagt til ✓`);
+}
+
+// ─── Planner ──────────────────────────────────────
+function renderPlanner(){
+  const el=document.getElementById('planner');
+  const allMeals=[...new Set(Object.values(weekPlan).flat())];
+  let html=`<div class="planner-header"><div class="planner-title">Ukesplan</div><div class="planner-sub">Planlegg middager. Legg ingredienser rett i handlelisten.</div></div><div class="week-grid">`;
+  DAYS.forEach((day,i)=>{
+    const meals=weekPlan[i]||[];const isT=i===TODAY_IDX;
+    html+=`<div class="day-card${meals.length?' has-items':''}${isT?' today':''}" onclick="openDaySh(${i})">
+      <div class="day-name">${day}${isT?' · i dag':''}</div>
+      ${meals.length?`<div class="day-items">${meals.join('<br>')}</div>`:`<div class="day-empty">Ingenting planlagt</div>`}
+      ${meals.length?`<div class="day-count">${meals.length}</div>`:''}
+    </div>`;
+  });
+  html+=`</div>${allMeals.length?`<button onclick="addWeekToList()" style="width:100%;padding:15px;background:var(--accent);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:500;font-family:inherit;cursor:pointer;transition:transform .15s;margin-bottom:16px" onmousedown="this.style.transform='scale(.97)'" onmouseup="this.style.transform=''">Legg til hele ukesplanen i listen →</button>`:''}`;
+  el.innerHTML=html;
+}
+function openDaySh(di){
+  const meals=weekPlan[di]||[];
+  document.getElementById('dayShTitle').textContent=DAYS[di]+(di===TODAY_IDX?' – i dag':'');
+  document.getElementById('dayShBody').innerHTML=`
+    <div style="margin-bottom:12px">${meals.length?meals.map((m,mi)=>`<div class="day-sh-item"><span>${m}</span><button onclick="removeMeal(${di},${mi})" style="background:none;border:none;color:var(--ghost);font-size:18px;cursor:pointer">×</button></div>`).join(''):`<div style="color:var(--ghost);font-size:14px;padding:12px 0">Ingen måltider planlagt ennå</div>`}</div>
+    <div class="day-sh-add"><input class="finp" id="mealInp" placeholder="Legg til middag…" autocomplete="off" onkeydown="if(event.key==='Enter')addMeal(${di})"><button class="day-sh-addbtn" onclick="addMeal(${di})">Legg til</button></div>
+    ${meals.length?`<button class="add-to-list-btn" onclick="addDayToList(${di})">Legg til i handlelisten ✓</button>`:''}`;
+  document.getElementById('dayOvl').classList.add('open');document.getElementById('daySh').classList.add('open');
+  setTimeout(()=>document.getElementById('mealInp')?.focus(),360);
+}
+function closeDaySh(){document.getElementById('dayOvl').classList.remove('open');document.getElementById('daySh').classList.remove('open')}
+function addMeal(di){const inp=document.getElementById('mealInp');const v=inp.value.trim();if(!v)return;if(!weekPlan[di])weekPlan[di]=[];weekPlan[di].push(v);inp.value='';save();openDaySh(di);renderPlanner()}
+function removeMeal(di,mi){weekPlan[di].splice(mi,1);save();openDaySh(di);renderPlanner()}
+function addDayToList(di){const meals=weekPlan[di]||[];let a=0;meals.forEach(m=>{if(!items.find(it=>it.name===m&&it.list===AL&&!it.done)){items.unshift({id:nid++,name:m,qty:1,cat:'Annet',store:'Alle',done:false,alt:'',list:AL,price:0,recur:false,by:myName});a++}});save();closeDaySh();switchView('list');render();showToast(`${a} varer lagt til ✓`)}
+function addWeekToList(){const all=[...new Set(Object.values(weekPlan).flat())];let a=0;all.forEach(m=>{if(!items.find(it=>it.name===m&&it.list===AL&&!it.done)){items.unshift({id:nid++,name:m,qty:1,cat:'Annet',store:'Alle',done:false,alt:'',list:AL,price:0,recur:false,by:myName});a++}});save();switchView('list');render();showToast(`${a} varer fra ukesplanen lagt til ✓`)}
+
+// ─── Templates ────────────────────────────────────
+function renderTemplates(){
+  document.getElementById('templates-wrap').innerHTML=`
+    <div class="planner-header"><div class="planner-title">Maler</div><div class="planner-sub">Legg til ferdige varelister med ett trykk.</div></div>
+    <div class="tmpl-label">Populære maler</div>
+    <div class="tmpl-grid">${TEMPLATES.map(t=>`
+      <div class="tmpl-card">
+        <div class="tmpl-ico">${t.ico}</div>
+        <div class="tmpl-info"><div class="tmpl-name">${t.name}</div><div class="tmpl-desc">${t.desc}</div></div>
+        <span class="tmpl-count">${t.items.length}</span>
+        <button class="tmpl-add" onclick="addTemplate('${t.id}')">+</button>
+      </div>`).join('')}
+    </div>`;
+}
+function addTemplate(tid){const t=TEMPLATES.find(x=>x.id===tid);if(!t)return;let a=0;t.items.forEach(name=>{if(!items.find(it=>it.name===name&&it.list===AL&&!it.done)){items.unshift({id:nid++,name,qty:1,cat:'Annet',store:'Alle',done:false,alt:'',list:AL,price:0,recur:false,by:myName});a++}});save();switchView('list');render();showToast(`${a} varer fra «${t.name}» lagt til ✓`)}
+
+// ─── Toast ────────────────────────────────────────
+let _tid;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.remove('hide');t.classList.add('show');
+  clearTimeout(_tid);_tid=setTimeout(()=>{t.classList.remove('show');t.classList.add('hide')},2300);
+}
+
+// ─── Partner notif ────────────────────────────────
+function showPartnerNotif(){
+  document.getElementById('ndot').style.display='block';
+  showToast('Sofie la til «Rømme» 🛒');
+  setTimeout(()=>document.getElementById('ndot').style.display='none',9000);
+}
+
+// ─── Render ───────────────────────────────────────
+function render(){renderTabs();renderList();updateSum();renderSChips();renderCatPicker()}
+if(localStorage.getItem('k_ob')==='1')render();
+
+// Demo: partner adds item after 10s
+setTimeout(()=>{
+  if(localStorage.getItem('k_ob')!=='1')return;
+  if(!items.find(it=>it.name==='Rømme'&&it.list===0)){
+    items.unshift({id:nid++,name:'Rømme',qty:1,cat:'Meieri',store:'Rema 1000',done:false,alt:'',list:0,price:22,recur:false,by:'S'});
+    save();showPartnerNotif();if(AL===0&&currentView==='list')render();
+    setTimeout(()=>{const el=document.getElementById('i'+(nid-1));if(el)el.classList.add('new-in')},80);
+  }
+},10000);
+</script>
+</body>
+</html>
