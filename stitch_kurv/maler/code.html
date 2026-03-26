@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html lang="no"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&amp;family=DM+Sans:wght@400;500;700&amp;family=Newsreader:ital,wght@0,400;0,700;1,400&amp;family=Be+Vietnam+Pro:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-sans { font-family: 'DM Sans', sans-serif; }
+        .glass-effect {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#fef9ee",
+                        "surface": "#fef9ee",
+                        "outline-variant": "#bfc9c1",
+                        "tertiary-fixed": "#ffdbd2",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#92f7c3",
+                        "secondary": "#006c48",
+                        "tertiary": "#7c2e19",
+                        "tertiary-fixed-dim": "#ffb4a1",
+                        "surface-variant": "#e7e2d8",
+                        "primary-fixed": "#b1f0ce",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f6f0e6",
+                        "on-tertiary-fixed-variant": "#7c2e19",
+                        "inverse-surface": "#32302a",
+                        "primary": "#0f5238",
+                        "inverse-primary": "#95d4b3",
+                        "secondary-fixed": "#92f7c3",
+                        "surface-container-high": "#ede8dd",
+                        "on-surface": "#1d1c16",
+                        "primary-container": "#2d6a4f",
+                        "surface-dim": "#dfd9d0",
+                        "surface-container-low": "#f9f3e9",
+                        "on-primary-fixed": "#002114",
+                        "on-secondary-fixed-variant": "#005235",
+                        "on-surface-variant": "#404943",
+                        "on-secondary-fixed": "#002113",
+                        "on-tertiary-container": "#ffcfc3",
+                        "surface-tint": "#2c694e",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#95d4b3",
+                        "surface-bright": "#fef9ee",
+                        "on-primary-container": "#a8e7c5",
+                        "on-primary-fixed-variant": "#0e5138",
+                        "on-secondary-container": "#00734d",
+                        "surface-container": "#f3ede3",
+                        "tertiary-container": "#9b452e",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#75daa8",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#3c0800",
+                        "surface-container-highest": "#e7e2d8",
+                        "outline": "#707973",
+                        "on-background": "#1d1c16"
+                    },
+                    fontFamily: {
+                        "headline": ["Newsreader"],
+                        "body": ["Be Vietnam Pro"],
+                        "label": ["Be Vietnam Pro"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fef9ee]/80 dark:bg-stone-900/80 backdrop-blur-md">
+<div class="flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-4">
+<button class="text-[#2d6a4f] dark:text-[#52b788] hover:bg-[#f9f3e9] dark:hover:bg-stone-800 transition-colors p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<span class="font-serif text-2xl italic font-bold text-[#0f5238] dark:text-[#d8f3dc]">Kurv</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="text-[#2d6a4f] dark:text-[#52b788] hover:bg-[#f9f3e9] p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border-2 border-primary-fixed">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="Portrait of a smiling woman in a warm sunlit kitchen wearing a linen apron" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXDtpkxzS4cx76Z965hM8OUFcaL2fdFz19ofYhyDo78lq9z2Q04FvX1qhq1HfA10B5Dw6m4cb59LT9n0eP9qY4bNxDmdzIGFf5-yHvJRDxKFzB7lz0DffpDt0aJqRmdnCYR3Q-UGpJQVLScikbNlCdu5LQtX2DcUi07YLokOcWwT57GX61XyxvI2ZuSC66fe1Y1bS8zx3ihSudYyHk1NG6VnNIPZ37_bCGv2xjdPw0SzxLRr0ZkZD89klxXNZpDrDdRRNODoNRlSS_"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-5xl mx-auto">
+<!-- Header Section -->
+<header class="mb-12">
+<h1 class="font-serif text-4xl md:text-5xl font-bold text-primary mb-3">Maler</h1>
+<p class="font-body text-on-surface-variant max-w-md">Planlegg uken raskere med dine faste favoritter og sesongbaserte samlinger.</p>
+</header>
+<!-- Bento-style Grid for Templates -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Template Card: Basics -->
+<div class="group relative flex flex-col bg-surface-container-low rounded-lg p-6 hover:translate-y-[-4px] transition-transform duration-300">
+<div class="absolute -top-4 -right-2 bg-tertiary-container text-white px-3 py-1 rounded-full text-[10px] font-sans font-medium tracking-widest uppercase z-10">
+                    6 ARTIKLER
+                </div>
+<div class="mb-6 rounded-lg overflow-hidden h-40">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Minimalist still life of organic milk, brown eggs, and artisanal sourdough bread on a rustic wooden table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0hbFhy8DQfLfVez9C_ibKi6E-gsBVXO5xdifYqto2u8W2WtqOZ_JSDK75CnHIs9XfAkPwtD19gO5L8XWN_iw6UsSTgzLPF2rRzsYcjmeffL4CPU7G3WDl5cP2peYGHWujGnOziQeAOKJ5a9Npvtek_ckQRlMTXtrFWVPIcWD8LShZE5Q9RudCJR9vS7u-e55jvaW_6yp33s3W6w7B2d6CiVZiyy42k-Ra11H3RnVdNyLHOsD8fWQHNYaAOan33XENxEFuqSQ_KmVE"/>
+</div>
+<h3 class="font-serif text-2xl font-bold text-on-surface mb-2">Basics</h3>
+<div class="flex gap-2 mb-8 text-2xl">
+<span>🥛</span><span>🥚</span><span>🍞</span><span>🧈</span>
+</div>
+<div class="mt-auto">
+<button class="w-full py-3 px-6 bg-[#2d6a4f] text-white rounded-full font-sans font-bold text-sm tracking-wide hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                        Bruk mal
+                        <span class="material-symbols-outlined text-sm" data-icon="add_shopping_cart">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<!-- Template Card: Pancake Sunday (Large Focus) -->
+<div class="group relative flex flex-col bg-surface-container-lowest rounded-lg p-6 shadow-sm border-2 border-primary/5 md:col-span-2 lg:col-span-1">
+<div class="absolute -top-4 -right-2 bg-secondary text-white px-3 py-1 rounded-full text-[10px] font-sans font-medium tracking-widest uppercase z-10">
+                    FAVORITT
+                </div>
+<div class="mb-6 rounded-lg overflow-hidden h-40">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Stack of fluffy buttermilk pancakes topped with fresh blueberries and drizzled with maple syrup" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC70Jtk3Zp9xJuVaQYMbwyyisxIKe9xUmeSOL5QiZ2bbLIZTmioVQ0EaVn_hIz4XePcHg9MXtldTmXkJf9Rq37HOsRp5wu1HGqlNxhxAVWBdN4YCCqNPmbnfabY_XzvDUzyrmGIqRpCD0FrdVcA6EMCO5C6NiRDRXpd2lTnX0ZR3eHANU_rtzCeEUZ_WOS0usdWbfDCW4H4KFKpGzAxStn5cOQZSAzvr7NXHJBaAljYlfUEYf7195eSLa5Hhfu9AGl8EOPJYhboKBhi"/>
+</div>
+<h3 class="font-serif text-2xl font-bold text-on-surface mb-2">Pancake Sunday</h3>
+<div class="flex gap-2 mb-8 text-2xl">
+<span>🥞</span><span>🍓</span><span>🥛</span><span>🍯</span><span>🧂</span>
+</div>
+<div class="mt-auto">
+<button class="w-full py-3 px-6 bg-[#2d6a4f] text-white rounded-full font-sans font-bold text-sm tracking-wide hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                        Bruk mal
+                        <span class="material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+</button>
+</div>
+</div>
+<!-- Template Card: Taco Friday -->
+<div class="group relative flex flex-col bg-surface-container-low rounded-lg p-6 hover:translate-y-[-4px] transition-transform duration-300">
+<div class="absolute -top-4 -right-2 bg-tertiary-container text-white px-3 py-1 rounded-full text-[10px] font-sans font-medium tracking-widest uppercase z-10">
+                    12 ARTIKLER
+                </div>
+<div class="mb-6 rounded-lg overflow-hidden h-40">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Authentic mexican tacos with grilled meat, fresh cilantro, onions, and lime wedges on a dark slate plate" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWvfx7LiGLxP9H7zv2q05vKxpVwWgW5tNuFcDWHc0LJh7JgyRioMrdYUtmyU-F97XqcsuksSGpIGJn8sRlBEeK-igKfAY0XzkOsfXaJU_eVQVW8YM5_x5CEZ7oFCDL0H0i8Gp0ytCC21Bbxze54_4E-IZkIRonN1bWLPGQHl9zlFb7HHjuTKATWPMq7c13bi3_I5sGr4ulumfC0-rFWZsF9bbboxBrm7nszq3QtFtURa62nh-s2fr_8diIH02FuD4795_Qpbcvq7Kh"/>
+</div>
+<h3 class="font-serif text-2xl font-bold text-on-surface mb-2">Taco Friday</h3>
+<div class="flex gap-2 mb-8 text-2xl">
+<span>🌮</span><span>🥑</span><span>🍅</span><span>🧀</span><span>🌶️</span>
+</div>
+<div class="mt-auto">
+<button class="w-full py-3 px-6 bg-[#2d6a4f] text-white rounded-full font-sans font-bold text-sm tracking-wide hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                        Bruk mal
+                        <span class="material-symbols-outlined text-sm" data-icon="celebration">celebration</span>
+</button>
+</div>
+</div>
+<!-- New Template Creation Placeholder -->
+<div class="group flex flex-col items-center justify-center bg-surface-container-low border-2 border-dashed border-outline-variant/30 rounded-lg p-8 hover:bg-surface-container transition-colors cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-primary/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl" data-icon="add_circle">add_circle</span>
+</div>
+<h4 class="font-serif text-xl font-bold text-primary">Lag ny mal</h4>
+<p class="font-body text-sm text-on-surface-variant text-center mt-2">Lagre din egen handleliste som en fast mal.</p>
+</div>
+<!-- Quick Prep -->
+<div class="group relative flex flex-col bg-surface-container-low rounded-lg p-6 hover:translate-y-[-4px] transition-transform duration-300">
+<div class="absolute -top-4 -right-2 bg-tertiary-container text-white px-3 py-1 rounded-full text-[10px] font-sans font-medium tracking-widest uppercase z-10">
+                    4 ARTIKLER
+                </div>
+<div class="mb-6 rounded-lg overflow-hidden h-40">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Colorful mediterranean salad bowl with hummus, olives, and fresh vegetables in bright daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlhMV2QvzxBke4rl10J1i7SiqDHdpAI7K9AEPSBP3ynkcPMD02CaYEqoeQUd1ASEQT9OavHnHniAi6OFn-AOwo4X8WaWBPiPnCnJSz2DhMUDcsoPp89T8yNzU8lO5BZl-oohZu3vgwVsssJ706DJMvM_Uxmtx6CjHnTG8nhTQkFDBagVKjMgLujWGbn6JCtSgNdmIUr7XNAx67pzHSkDS1pZhf7RXhl82OVu1NkhKEff1WqRCcG9VxdxVpxRk-MIWxvmGUzpqMLq4X"/>
+</div>
+<h3 class="font-serif text-2xl font-bold text-on-surface mb-2">Rask Lunsj</h3>
+<div class="flex gap-2 mb-8 text-2xl">
+<span>🥗</span><span>🥑</span><span>🍋</span><span>🫒</span>
+</div>
+<div class="mt-auto">
+<button class="w-full py-3 px-6 bg-[#2d6a4f] text-white rounded-full font-sans font-bold text-sm tracking-wide hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                        Bruk mal
+                        <span class="material-symbols-outlined text-sm" data-icon="timer">timer</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-[#fef9ee]/90 dark:bg-stone-900/90 backdrop-blur-xl shadow-[0_-8px_32px_rgba(29,28,22,0.08)] pb-6 pt-3 px-4 flex justify-around items-center rounded-t-[3rem] border-t border-[#1d1c16]/5 md:max-w-md md:left-1/2 md:-translate-x-1/2 md:mb-4 md:rounded-full">
+<a class="flex flex-col items-center justify-center text-[#2d6a4f]/60 dark:text-stone-400 px-4 py-2 hover:text-[#0f5238] transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="shopping_basket">shopping_basket</span>
+<span class="font-sans text-[10px] font-medium tracking-tight">Liste</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#2d6a4f]/60 dark:text-stone-400 px-4 py-2 hover:text-[#0f5238] transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="calendar_month">calendar_month</span>
+<span class="font-sans text-[10px] font-medium tracking-tight">Planlegger</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#2d6a4f] text-white rounded-full px-5 py-2 scale-110 -translate-y-1 transition-all shadow-lg" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="layers" style="font-variation-settings: 'FILL' 1;">layers</span>
+<span class="font-sans text-[10px] font-medium tracking-tight">Maler</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#2d6a4f]/60 dark:text-stone-400 px-4 py-2 hover:text-[#0f5238] transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="share">share</span>
+<span class="font-sans text-[10px] font-medium tracking-tight">Deling</span>
+</a>
+</nav>
+</body></html>

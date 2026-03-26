@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html lang="no"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&amp;family=DM+Sans:wght@400;500;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Be+Vietnam+Pro:wght@100;300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-lowest": "#ffffff",
+              "background": "#fef9ee",
+              "surface": "#fef9ee",
+              "outline-variant": "#bfc9c1",
+              "tertiary-fixed": "#ffdbd2",
+              "on-error-container": "#93000a",
+              "secondary-container": "#92f7c3",
+              "secondary": "#006c48",
+              "tertiary": "#7c2e19",
+              "tertiary-fixed-dim": "#ffb4a1",
+              "surface-variant": "#e7e2d8",
+              "primary-fixed": "#b1f0ce",
+              "error-container": "#ffdad6",
+              "on-error": "#ffffff",
+              "on-tertiary": "#ffffff",
+              "inverse-on-surface": "#f6f0e6",
+              "on-tertiary-fixed-variant": "#7c2e19",
+              "inverse-surface": "#32302a",
+              "primary": "#0f5238",
+              "inverse-primary": "#95d4b3",
+              "secondary-fixed": "#92f7c3",
+              "surface-container-high": "#ede8dd",
+              "on-surface": "#1d1c16",
+              "primary-container": "#2d6a4f",
+              "surface-dim": "#dfd9d0",
+              "surface-container-low": "#f9f3e9",
+              "on-primary-fixed": "#002114",
+              "on-secondary-fixed-variant": "#005235",
+              "on-surface-variant": "#404943",
+              "on-secondary-fixed": "#002113",
+              "on-tertiary-container": "#ffcfc3",
+              "surface-tint": "#2c694e",
+              "on-secondary": "#ffffff",
+              "primary-fixed-dim": "#95d4b3",
+              "surface-bright": "#fef9ee",
+              "on-primary-container": "#a8e7c5",
+              "on-primary-fixed-variant": "#0e5138",
+              "on-secondary-container": "#00734d",
+              "surface-container": "#f3ede3",
+              "tertiary-container": "#9b452e",
+              "error": "#ba1a1a",
+              "secondary-fixed-dim": "#75daa8",
+              "on-primary": "#ffffff",
+              "on-tertiary-fixed": "#3c0800",
+              "surface-container-highest": "#e7e2d8",
+              "outline": "#707973",
+              "on-background": "#1d1c16"
+            },
+            fontFamily: {
+              "serif": ["Playfair Display", "serif"],
+              "sans": ["DM Sans", "sans-serif"],
+              "headline": ["Newsreader", "serif"],
+              "body": ["Be Vietnam Pro", "sans-serif"],
+              "label": ["Be Vietnam Pro", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .organic-divider {
+        height: 2px;
+        background: radial-gradient(circle at center, #bfc9c1 0%, transparent 100%);
+        opacity: 0.3;
+        width: 100%;
+        margin: 1rem 0;
+      }
+      .custom-checkbox:checked {
+        background-color: #2d6a4f;
+        border-color: #2d6a4f;
+      }
+      .glass-header {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      body {
+        background-color: #fef9ee;
+        color: #1d1c16;
+      }
+    </style>
+</head>
+<body class="font-sans selection:bg-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fef9ee]/80 dark:bg-stone-900/80 backdrop-blur-md flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#2d6a4f] cursor-pointer">menu</span>
+<h1 class="font-serif text-2xl italic font-bold text-[#0f5238] dark:text-[#d8f3dc]">Kurv</h1>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACNqvE0geU28V0qm2bf8MDRi09CFrCLePP1eh8K0r6Ksdb82VADQb35VBGX65n9mjEb5UlRvxavrIlf53xUYSegEc0vFET-doMV3b1QSkiWum2xgWMeO29VpysnmB0uic4oRHULgb2FR3EBn_WBY5P8DAY-0IMqPqw4kvdu7cteBq8TbA3MsFT8OI6GKCdG0WWhePprhDD8UuPVWG3sf_Xwyyb039EGQGPww6FsnB5ULpwCu50SZ6HFuPjIEhSPW3-EPd5h3kS8NYL"/>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-2xl mx-auto">
+<!-- Page Title -->
+<div class="mb-10">
+<span class="font-sans text-[11px] tracking-widest uppercase text-stone-500 mb-2 block">Dine Innkjøp</span>
+<h2 class="font-serif text-4xl font-black text-primary leading-tight">Handleturen</h2>
+</div>
+<!-- Shop Section: REMA 1000 -->
+<section class="mb-12">
+<div class="sticky top-20 z-40 py-4 bg-background/95 glass-header mb-6 flex justify-between items-end">
+<h3 class="font-serif text-2xl font-bold text-primary">REMA 1000</h3>
+<span class="font-sans text-[10px] font-bold tracking-widest uppercase bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full">5 ting</span>
+</div>
+<!-- Category: Mat & Drikke -->
+<div class="mb-8">
+<h4 class="font-serif italic text-lg text-stone-600 mb-4 ml-2">Mat &amp; Drikke</h4>
+<div class="space-y-4">
+<div class="group flex items-center justify-between p-5 bg-surface-container-lowest rounded-lg hover:shadow-lg hover:shadow-black/5 transition-all duration-300">
+<div class="flex items-center gap-4">
+<input checked="" class="w-6 h-6 rounded-full border-2 border-primary text-primary focus:ring-primary custom-checkbox cursor-pointer transition-transform duration-200 active:scale-90" type="checkbox"/>
+<span class="font-sans text-md text-on-surface line-through decoration-stone-400 text-stone-400">Helmelk 1.5L</span>
+</div>
+<div class="bg-tertiary-container/10 text-tertiary-container px-3 py-1 rounded-full text-xs font-bold font-sans">1 stk</div>
+</div>
+<div class="group flex items-center justify-between p-5 bg-surface-container-lowest rounded-lg hover:shadow-lg hover:shadow-black/5 transition-all duration-300">
+<div class="flex items-center gap-4">
+<input class="w-6 h-6 rounded-full border-2 border-outline text-primary focus:ring-primary custom-checkbox cursor-pointer transition-transform duration-200 active:scale-90" type="checkbox"/>
+<span class="font-sans text-md text-on-surface">Økologisk Smør</span>
+</div>
+<div class="bg-tertiary-container/10 text-tertiary-container px-3 py-1 rounded-full text-xs font-bold font-sans">250g</div>
+</div>
+<div class="group flex items-center justify-between p-5 bg-surface-container-lowest rounded-lg hover:shadow-lg hover:shadow-black/5 transition-all duration-300">
+<div class="flex items-center gap-4">
+<input class="w-6 h-6 rounded-full border-2 border-outline text-primary focus:ring-primary custom-checkbox cursor-pointer transition-transform duration-200 active:scale-90" type="checkbox"/>
+<span class="font-sans text-md text-on-surface">Hjertesalat</span>
+</div>
+<div class="bg-tertiary-container/10 text-tertiary-container px-3 py-1 rounded-full text-xs font-bold font-sans">2-pk</div>
+</div>
+</div>
+<div class="organic-divider"></div>
+</div>
+<!-- Category: Hjem & Hobby -->
+<div class="mb-8">
+<h4 class="font-serif italic text-lg text-stone-600 mb-4 ml-2">Hjem &amp; Hobby</h4>
+<div class="space-y-4">
+<div class="group flex items-center justify-between p-5 bg-surface-container-lowest rounded-lg hover:shadow-lg hover:shadow-black/5 transition-all duration-300">
+<div class="flex items-center gap-4">
+<input class="w-6 h-6 rounded-full border-2 border-outline text-primary focus:ring-primary custom-checkbox cursor-pointer transition-transform duration-200 active:scale-90" type="checkbox"/>
+<span class="font-sans text-md text-on-surface">Telys</span>
+</div>
+<div class="bg-tertiary-container/10 text-tertiary-container px-3 py-1 rounded-full text-xs font-bold font-sans">50-pk</div>
+</div>
+<div class="group flex items-center justify-between p-5 bg-surface-container-lowest rounded-lg hover:shadow-lg hover:shadow-black/5 transition-all duration-300">
+<div class="flex items-center gap-4">
+<input class="w-6 h-6 rounded-full border-2 border-outline text-primary focus:ring-primary custom-checkbox cursor-pointer transition-transform duration-200 active:scale-90" type="checkbox"/>
+<span class="font-sans text-md text-on-surface">Grønnsåpe</span>
+</div>
+<div class="bg-tertiary-container/10 text-tertiary-container px-3 py-1 rounded-full text-xs font-bold font-sans">1L</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Shop Section: MENY -->
+<section class="mb-12">
+<div class="sticky top-20 z-40 py-4 bg-background/95 glass-header mb-6 flex justify-between items-end">
+<h3 class="font-serif text-2xl font-bold text-tertiary">MENY</h3>
+<span class="font-sans text-[10px] font-bold tracking-widest uppercase bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full">2 ting</span>
+</div>
+<div class="mb-8">
+<h4 class="font-serif italic text-lg text-stone-600 mb-4 ml-2">Mat &amp; Drikke</h4>
+<div class="space-y-4">
+<div class="group flex items-center justify-between p-5 bg-surface-container-lowest rounded-lg hover:shadow-lg hover:shadow-black/5 transition-all duration-300">
+<div class="flex items-center gap-4">
+<input class="w-6 h-6 rounded-full border-2 border-outline text-primary focus:ring-primary custom-checkbox cursor-pointer transition-transform duration-200 active:scale-90" type="checkbox"/>
+<span class="font-sans text-md text-on-surface">Surdeigsbrød</span>
+</div>
+<div class="bg-tertiary-container/10 text-tertiary-container px-3 py-1 rounded-full text-xs font-bold font-sans">Nystekt</div>
+</div>
+<div class="relative group p-5 bg-surface-container-lowest rounded-lg hover:shadow-lg hover:shadow-black/5 transition-all duration-300 overflow-hidden">
+<div class="flex items-center justify-between relative z-10">
+<div class="flex items-center gap-4">
+<input class="w-6 h-6 rounded-full border-2 border-outline text-primary focus:ring-primary custom-checkbox cursor-pointer transition-transform duration-200 active:scale-90" type="checkbox"/>
+<span class="font-sans text-md text-on-surface">Serranoskinke</span>
+</div>
+<div class="bg-tertiary-container/10 text-tertiary-container px-3 py-1 rounded-full text-xs font-bold font-sans">150g</div>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Empty State Suggestion / Editorial Content -->
+<div class="mt-20 p-8 border-2 border-dashed border-outline-variant/30 rounded-lg text-center bg-surface-container-low">
+<span class="material-symbols-outlined text-primary-container text-4xl mb-4">auto_awesome</span>
+<h3 class="font-serif text-2xl text-on-surface mb-2">Mangler du inspirasjon?</h3>
+<p class="font-sans text-stone-600 text-sm mb-6">Prøv en av dine lagrede maler for en raskere handletur.</p>
+<button class="bg-gradient-to-br from-primary to-primary-container text-white px-8 py-3 rounded-full font-sans font-bold text-sm shadow-xl shadow-primary/20 active:scale-95 transition-all">
+            Se Maler
+        </button>
+</div>
+</main>
+<!-- FAB -->
+<button class="fixed bottom-24 right-6 w-16 h-16 bg-[#2d6a4f] text-white rounded-full shadow-[0_8px_32px_rgba(45,106,79,0.3)] flex items-center justify-center z-50 hover:scale-110 active:scale-90 transition-all">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#fef9ee]/90 dark:bg-stone-900/90 backdrop-blur-xl z-50 rounded-t-[3rem] border-t border-[#1d1c16]/5 shadow-[0_-8px_32px_rgba(29,28,22,0.08)]">
+<!-- Liste (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#2d6a4f] text-white rounded-full px-5 py-2 scale-110 -translate-y-1 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shopping_basket</span>
+<span class="font-sans text-[10px] font-medium tracking-tight mt-0.5">Liste</span>
+</a>
+<!-- Planlegger -->
+<a class="flex flex-col items-center justify-center text-[#2d6a4f]/60 dark:text-stone-400 px-4 py-2 hover:text-[#0f5238] transition-colors" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-sans text-[10px] font-medium tracking-tight mt-0.5">Planlegger</span>
+</a>
+<!-- Maler -->
+<a class="flex flex-col items-center justify-center text-[#2d6a4f]/60 dark:text-stone-400 px-4 py-2 hover:text-[#0f5238] transition-colors" href="#">
+<span class="material-symbols-outlined">layers</span>
+<span class="font-sans text-[10px] font-medium tracking-tight mt-0.5">Maler</span>
+</a>
+<!-- Deling -->
+<a class="flex flex-col items-center justify-center text-[#2d6a4f]/60 dark:text-stone-400 px-4 py-2 hover:text-[#0f5238] transition-colors" href="#">
+<span class="material-symbols-outlined">share</span>
+<span class="font-sans text-[10px] font-medium tracking-tight mt-0.5">Deling</span>
+</a>
+</nav>
+</body></html>

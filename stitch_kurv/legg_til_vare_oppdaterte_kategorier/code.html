@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html lang="nb"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&amp;family=DM+Sans:wght@400;500;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,700;1,6..72,400&amp;family=Be+Vietnam+Pro:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .letter-spacing-label {
+            letter-spacing: 0.12em;
+        }
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #fef9ee;
+        }
+        h1, h2, h3, .serif-font {
+            font-family: 'Playfair Display', serif;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-lowest": "#ffffff",
+              "background": "#fef9ee",
+              "surface": "#fef9ee",
+              "outline-variant": "#bfc9c1",
+              "tertiary-fixed": "#ffdbd2",
+              "on-error-container": "#93000a",
+              "secondary-container": "#92f7c3",
+              "secondary": "#006c48",
+              "tertiary": "#7c2e19",
+              "tertiary-fixed-dim": "#ffb4a1",
+              "surface-variant": "#e7e2d8",
+              "primary-fixed": "#b1f0ce",
+              "error-container": "#ffdad6",
+              "on-error": "#ffffff",
+              "on-tertiary": "#ffffff",
+              "inverse-on-surface": "#f6f0e6",
+              "on-tertiary-fixed-variant": "#7c2e19",
+              "inverse-surface": "#32302a",
+              "primary": "#0f5238",
+              "inverse-primary": "#95d4b3",
+              "secondary-fixed": "#92f7c3",
+              "surface-container-high": "#ede8dd",
+              "on-surface": "#1d1c16",
+              "primary-container": "#2d6a4f",
+              "surface-dim": "#dfd9d0",
+              "surface-container-low": "#f9f3e9",
+              "on-primary-fixed": "#002114",
+              "on-secondary-fixed-variant": "#005235",
+              "on-surface-variant": "#404943",
+              "on-secondary-fixed": "#002113",
+              "on-tertiary-container": "#ffcfc3",
+              "surface-tint": "#2c694e",
+              "on-secondary": "#ffffff",
+              "primary-fixed-dim": "#95d4b3",
+              "surface-bright": "#fef9ee",
+              "on-primary-container": "#a8e7c5",
+              "on-primary-fixed-variant": "#0e5138",
+              "on-secondary-container": "#00734d",
+              "surface-container": "#f3ede3",
+              "tertiary-container": "#9b452e",
+              "error": "#ba1a1a",
+              "secondary-fixed-dim": "#75daa8",
+              "on-primary": "#ffffff",
+              "on-tertiary-fixed": "#3c0800",
+              "surface-container-highest": "#e7e2d8",
+              "outline": "#707973",
+              "on-background": "#1d1c16"
+            },
+            fontFamily: {
+              "headline": ["Newsreader", "serif"],
+              "body": ["Be Vietnam Pro", "sans-serif"],
+              "label": ["Be Vietnam Pro", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col overflow-hidden">
+<!-- Top App Bar (From JSON) -->
+<header class="fixed top-0 w-full z-50 bg-[#fef9ee]/80 backdrop-blur-md flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#2d6a4f]" data-icon="menu">menu</span>
+<span class="font-serif text-2xl italic font-bold text-[#0f5238]">Kurv</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="minimalist portrait of a man in soft morning light with clean background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCml-ssA4qeNnjyQx-bwRHdUqYLh1gLlYf55WGTWvLBs6V-6FDeBSrSHkTg1zfgWt7ro1psE5wc0l4TzGJYU021Hz0LlFEzCK_iysPReomoFlGSv9jSxkz2SK8ejArEqEi__wZ7GJZ_RxKuUGwchZCgb7CpKRlpz58J6PiUOkyisQ0k4VWJI5eiJRgy21-Soo9qvBfPyc-dKKVr3LIRO6p8pM-T7zaku9_uafRyNlJOV_SQ0NacBtaNUCEu5VFx0c3doQl9VSHWAPcF"/>
+</div>
+</header>
+<!-- Background Content (Dimmed Main List) -->
+<main class="flex-1 mt-20 px-6 pb-24 filter blur-[2px] opacity-40 pointer-events-none">
+<div class="max-w-md mx-auto">
+<h1 class="font-serif text-3xl mb-8">Handleliste</h1>
+<div class="space-y-6">
+<!-- Produce Section -->
+<div class="bg-surface-container-low p-6 rounded-lg">
+<h2 class="font-label text-[11px] uppercase letter-spacing-label text-on-surface-variant mb-4">Grønnsaker</h2>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-5 h-5 rounded-full border-2 border-primary"></div>
+<span class="font-medium">Økologiske tomater</span>
+</div>
+<span class="bg-tertiary-container/10 text-tertiary-container px-3 py-1 rounded-full text-xs font-bold">3 stk</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-5 h-5 rounded-full border-2 border-primary"></div>
+<span class="font-medium">Grønnkål</span>
+</div>
+<span class="bg-tertiary-container/10 text-tertiary-container px-3 py-1 rounded-full text-xs font-bold">1 pose</span>
+</div>
+</div>
+</div>
+<!-- Dairy Section -->
+<div class="bg-surface-container-low p-6 rounded-lg">
+<h2 class="font-label text-[11px] uppercase letter-spacing-label text-on-surface-variant mb-4">Meieriprodukter</h2>
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-5 h-5 rounded-full border-2 border-primary"></div>
+<span class="font-medium">Mandelmelk</span>
+</div>
+<span class="bg-tertiary-container/10 text-tertiary-container px-3 py-1 rounded-full text-xs font-bold">2 L</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Sheet Backdrop -->
+<div class="fixed inset-0 bg-on-surface/10 z-[60] flex items-end">
+<!-- Bottom Sheet Content -->
+<div class="w-full max-w-lg mx-auto bg-[#FAF8F5] rounded-t-[3rem] shadow-[0_-12px_48px_rgba(29,28,22,0.15)] flex flex-col p-8 pt-4 pb-12 animate-slide-up">
+<!-- Handle -->
+<div class="w-12 h-1.5 bg-surface-container-highest rounded-full mx-auto mb-8"></div>
+<h2 class="font-serif text-2xl font-bold text-primary mb-6">Nytt element</h2>
+<div class="space-y-8">
+<!-- Name Input -->
+<div class="space-y-2">
+<label class="font-label text-[11px] uppercase letter-spacing-label text-on-surface-variant px-1">Varenavn</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-xl py-4 px-6 text-lg focus:ring-2 focus:ring-primary shadow-[0_4px_20px_rgba(0,0,0,0.03)] placeholder:text-on-surface-variant/40" placeholder="Hva trenger du?" type="text"/>
+</div>
+<!-- Shop Chips -->
+<div class="space-y-3">
+<label class="font-label text-[11px] uppercase letter-spacing-label text-on-surface-variant px-1">Velg Butikk</label>
+<div class="flex flex-wrap gap-2">
+<button class="bg-primary text-white px-5 py-2 rounded-full font-medium shadow-md transition-all">Meny</button>
+<button class="bg-surface-container-highest text-on-surface-variant px-5 py-2 rounded-full font-medium hover:bg-surface-variant transition-colors">Rema 1000</button>
+<button class="bg-surface-container-highest text-on-surface-variant px-5 py-2 rounded-full font-medium hover:bg-surface-variant transition-colors">Kolonial</button>
+<button class="bg-surface-container-highest text-on-surface-variant px-5 py-2 rounded-full font-medium hover:bg-surface-variant transition-colors">Coop Mega</button>
+</div>
+</div>
+<!-- Category Grid -->
+<div class="space-y-3">
+<label class="font-label text-[11px] uppercase letter-spacing-label text-on-surface-variant px-1">Kategori</label>
+<div class="grid grid-cols-2 gap-4">
+<button class="flex flex-col items-center gap-3 p-6 bg-surface-container-lowest rounded-3xl hover:bg-primary-container/10 transition-colors border-2 border-transparent focus:border-primary shadow-sm">
+<span class="text-4xl">🛍️</span>
+<span class="text-[11px] font-bold uppercase tracking-widest text-on-surface">Mat &amp; Drikke</span>
+</button>
+<button class="flex flex-col items-center gap-3 p-6 bg-surface-container-lowest rounded-3xl hover:bg-primary-container/10 transition-colors border-2 border-transparent focus:border-primary shadow-sm">
+<span class="text-4xl">🏠</span>
+<span class="text-[11px] font-bold uppercase tracking-widest text-on-surface">Hjem &amp; Diverse</span>
+</button>
+</div>
+</div>
+<!-- Notes Field -->
+<div class="space-y-2">
+<label class="font-label text-[11px] uppercase letter-spacing-label text-on-surface-variant px-1">Notater</label>
+<textarea class="w-full bg-surface-container-lowest border-none rounded-xl py-4 px-6 font-body focus:ring-2 focus:ring-primary shadow-[0_4px_20px_rgba(0,0,0,0.02)] placeholder:text-on-surface-variant/40 resize-none" placeholder="Legg til en kommentar..." rows="2"></textarea>
+</div>
+<!-- Submit Button -->
+<button class="w-full py-5 rounded-full bg-primary-container text-white font-bold text-lg shadow-xl shadow-primary-container/20 hover:scale-[1.02] active:scale-95 transition-all">
+                Legg til
+            </button>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar (From JSON) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#fef9ee]/90 backdrop-blur-xl z-50 rounded-t-[3rem] shadow-[0_-8px_32px_rgba(29,28,22,0.08)]">
+<a class="flex flex-col items-center justify-center bg-[#2d6a4f] text-white rounded-full px-5 py-2 scale-110 -translate-y-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_basket">shopping_basket</span>
+<span class="font-sans text-[10px] font-medium tracking-tight">Liste</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#2d6a4f]/60 px-4 py-2 hover:text-[#0f5238] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-sans text-[10px] font-medium tracking-tight">Planlegger</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#2d6a4f]/60 px-4 py-2 hover:text-[#0f5238] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+<span class="font-sans text-[10px] font-medium tracking-tight">Maler</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#2d6a4f]/60 px-4 py-2 hover:text-[#0f5238] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+<span class="font-sans text-[10px] font-medium tracking-tight">Deling</span>
+</a>
+</nav>
+</body></html>

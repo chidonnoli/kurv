@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html class="light" lang="no"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&amp;family=DM+Sans:wght@400;500;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,700;0,6..72,800;1,6..72,400&amp;family=Be+Vietnam+Pro:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-lowest": "#ffffff",
+              "background": "#fef9ee",
+              "surface": "#fef9ee",
+              "outline-variant": "#bfc9c1",
+              "tertiary-fixed": "#ffdbd2",
+              "on-error-container": "#93000a",
+              "secondary-container": "#92f7c3",
+              "secondary": "#006c48",
+              "tertiary": "#7c2e19",
+              "tertiary-fixed-dim": "#ffb4a1",
+              "surface-variant": "#e7e2d8",
+              "primary-fixed": "#b1f0ce",
+              "error-container": "#ffdad6",
+              "on-error": "#ffffff",
+              "on-tertiary": "#ffffff",
+              "inverse-on-surface": "#f6f0e6",
+              "on-tertiary-fixed-variant": "#7c2e19",
+              "inverse-surface": "#32302a",
+              "primary": "#0f5238",
+              "inverse-primary": "#95d4b3",
+              "secondary-fixed": "#92f7c3",
+              "surface-container-high": "#ede8dd",
+              "on-surface": "#1d1c16",
+              "primary-container": "#2d6a4f",
+              "surface-dim": "#dfd9d0",
+              "surface-container-low": "#f9f3e9",
+              "on-primary-fixed": "#002114",
+              "on-secondary-fixed-variant": "#005235",
+              "on-surface-variant": "#404943",
+              "on-secondary-fixed": "#002113",
+              "on-tertiary-container": "#ffcfc3",
+              "surface-tint": "#2c694e",
+              "on-secondary": "#ffffff",
+              "primary-fixed-dim": "#95d4b3",
+              "surface-bright": "#fef9ee",
+              "on-primary-container": "#a8e7c5",
+              "on-primary-fixed-variant": "#0e5138",
+              "on-secondary-container": "#00734d",
+              "surface-container": "#f3ede3",
+              "tertiary-container": "#9b452e",
+              "error": "#ba1a1a",
+              "secondary-fixed-dim": "#75daa8",
+              "on-primary": "#ffffff",
+              "on-tertiary-fixed": "#3c0800",
+              "surface-container-highest": "#e7e2d8",
+              "outline": "#707973",
+              "on-background": "#1d1c16"
+            },
+            fontFamily: {
+              "headline": ["Newsreader", "serif"],
+              "body": ["Be Vietnam Pro", "sans-serif"],
+              "label": ["Be Vietnam Pro", "sans-serif"],
+              "serif": ["Playfair Display", "serif"],
+              "sans": ["DM Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .editorial-shadow {
+        box-shadow: 0 8px 32px rgba(29, 28, 22, 0.08);
+      }
+      body {
+        font-family: 'Be Vietnam Pro', sans-serif;
+        background-color: #fef9ee;
+        color: #1d1c16;
+      }
+      .serif-display {
+        font-family: 'Playfair Display', serif;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fef9ee]/80 dark:bg-stone-900/80 backdrop-blur-md flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-4">
+<button class="text-[#2d6a4f] dark:text-[#52b788] hover:bg-[#f9f3e9] dark:hover:bg-stone-800 transition-colors p-2 rounded-full">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-serif text-2xl italic font-bold text-[#0f5238] dark:text-[#d8f3dc]">Kurv</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="Close-up portrait of a friendly woman in a bright kitchen with soft natural morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZ4DoVcZEhYUJVRgFXAgT3HG2cRTGYddx7qQxxy4IMpMOxKj2pDwRa_XDbwXRvdLgJ26xKp3tDoJlyuwv0jzSTZyXtyMtgq83KyA2D9OwgHCK0R5s0RqjEtUq1YbiRdVMxTeCouDNM2cX6TlosFt3VNAUMQkRTZHGeiceUGrvsfBeZoDwuqGmVuDP36_jq22HrIM95Nze65IlixFTf01xzpnxTN1bxid9VQRByNijyF-aXcdI2e4sFRyG6G4XCcmgWJWwzPY3WrjtB"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 px-6 max-w-5xl mx-auto">
+<!-- Header Section -->
+<section class="mb-10">
+<span class="font-sans text-[11px] tracking-widest uppercase DM Sans text-primary-container font-bold mb-2 block">Denne uken</span>
+<div class="flex justify-between items-end">
+<h2 class="serif-display text-4xl md:text-5xl font-black text-on-surface">Middagsplanlegger</h2>
+<div class="hidden md:flex gap-2">
+<button class="px-6 py-3 rounded-xl bg-surface-container-low text-primary font-sans font-bold hover:bg-surface-container-high transition-all">
+                        Tidligere uker
+                    </button>
+<button class="px-6 py-3 rounded-xl bg-primary-container text-white font-sans font-bold shadow-lg hover:translate-y-[-2px] transition-all">
+                        Generer handleliste
+                    </button>
+</div>
+</div>
+</section>
+<!-- Weekly Grid (Bento/Asymmetric Style) -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Mandag - Large Featured Card -->
+<div class="md:col-span-8 group relative overflow-hidden bg-surface-container-lowest rounded-[2rem] p-8 transition-all hover:shadow-xl editorial-shadow">
+<div class="flex flex-col md:flex-row justify-between h-full gap-8">
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<h3 class="serif-display text-3xl font-bold mb-2">Mandag</h3>
+<div class="inline-flex items-center px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold mb-4">
+<span class="material-symbols-outlined text-sm mr-1">timer</span> 20 min
+                            </div>
+<p class="text-xl text-on-surface-variant leading-relaxed">Pasta Bolognese med revet parmesan og frisk basilikum</p>
+</div>
+<button class="mt-6 flex items-center gap-2 text-primary font-bold hover:translate-x-1 transition-transform">
+<span class="material-symbols-outlined">edit</span>
+                            Endre rett
+                        </button>
+</div>
+<div class="w-full md:w-48 h-48 rounded-2xl overflow-hidden relative">
+<img alt="Pasta Bolognese" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Gourmet pasta bolognese bowl with fresh basil and parmesan flakes on a rustic table with warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMcB8InkgVaYb3On3gaowZRR0NiOUX6fUPX4eXdOaXVlNhBC0frsYu90-5HewK4Sa5K6DmOeE6TrGJaMWZ67GQ31ngXarwhHVsTQJ9EZ9wNFTobLMbW-mL4MQ6tV577it-7sh65hq1frEI0XcscrZCf6dovzq7TDDG2rTzrq5znnpGEnRU2eFu51AtxyAeNOvkrrVNe5I8bGEcMo4uoJM4X9WVT7hvFvuzsjsTyvKMTOE17NYM6-qCfMu1p-XehkFHONnuYbMfhzlv"/>
+</div>
+</div>
+</div>
+<!-- Tirsdag - Slim Card -->
+<div class="md:col-span-4 bg-surface-container-low rounded-[2rem] p-8 flex flex-col justify-between border border-primary/5 editorial-shadow">
+<div>
+<h3 class="serif-display text-2xl font-bold mb-1">Tirsdag</h3>
+<p class="text-lg font-medium text-primary">Fiskekaker</p>
+<p class="text-sm text-on-surface-variant opacity-70">m/ raspa gulrot og potet</p>
+</div>
+<div class="mt-8 flex justify-end">
+<div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white cursor-pointer hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">check</span>
+</div>
+</div>
+</div>
+<!-- Onsdag - Visual Card -->
+<div class="md:col-span-4 bg-white rounded-[2rem] overflow-hidden flex flex-col editorial-shadow">
+<div class="h-40 relative">
+<img alt="Salat" class="w-full h-full object-cover" data-alt="Vibrant healthy salad bowl with roasted vegetables and seeds, bright editorial lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBiviLsIzE6DxmTP1kv5SAYNDpTI7F_Wsbs3lsJX8Oec0BZ0qG_5cm2lMgP7skXSy0WAsnAV3w2Ml1GDrKZV70BDNsFU8SPXMjGrApAyv0I9Jsok6hulomfZWAPx7xLW4US_b-D3sIwtBmy3q0i-f7gMns7LzEMxoi89v1wbjo7SQ18O9Mf4EF33-Ppaedl1ZquxE4lbAANHm2tyQUkldLrvYQ17_OAAU-ZpN10v566KAsOFVsdrCCZXmsCNTa00c0-AydN7Ui0ZU0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+<h3 class="absolute bottom-4 left-6 serif-display text-2xl font-bold text-white">Onsdag</h3>
+</div>
+<div class="p-6">
+<p class="font-medium text-on-surface">Couscoussalat med halloumi</p>
+<button class="mt-4 text-primary text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                        Legg til ingredienser
+                    </button>
+</div>
+</div>
+<!-- Torsdag - Minimal/Empty Placeholder -->
+<div class="md:col-span-4 bg-[#f4f2ef] rounded-[2rem] p-8 border-2 border-dashed border-outline-variant/30 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-white transition-colors editorial-shadow">
+<h3 class="serif-display text-2xl font-bold mb-2">Torsdag</h3>
+<div class="w-14 h-14 rounded-full bg-surface-container-highest flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all mb-4">
+<span class="material-symbols-outlined text-3xl">add</span>
+</div>
+<p class="text-sm font-sans uppercase tracking-widest text-on-surface-variant">Legg til middag</p>
+</div>
+<!-- Fredag - Fun Highlight -->
+<div class="md:col-span-4 bg-tertiary-fixed rounded-[2rem] p-8 flex flex-col justify-between editorial-shadow">
+<div>
+<div class="flex justify-between items-start">
+<h3 class="serif-display text-2xl font-bold text-on-tertiary-fixed">Fredag</h3>
+<span class="material-symbols-outlined text-tertiary text-3xl">local_pizza</span>
+</div>
+<p class="text-xl font-bold text-tertiary mt-2">Hjemmelaget Pizza</p>
+<p class="text-sm text-tertiary/70 mt-1">Tradisjonell helgekos</p>
+</div>
+<div class="mt-8 bg-white/40 backdrop-blur-sm rounded-xl p-3 flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary">group</span>
+<span class="text-xs font-bold text-tertiary">Delt med familien</span>
+</div>
+</div>
+<!-- Lørdag & Søndag Horizontal Split -->
+<div class="md:col-span-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-surface-container-lowest rounded-[2rem] p-8 flex items-center gap-6 editorial-shadow border-l-8 border-secondary">
+<div class="flex-1">
+<h3 class="serif-display text-2xl font-bold">Lørdag</h3>
+<p class="text-lg text-on-surface-variant">Biff m/ fløtegratinerte poteter</p>
+</div>
+<span class="material-symbols-outlined text-4xl text-secondary-container">restaurant</span>
+</div>
+<div class="bg-surface-container-low rounded-[2rem] p-8 flex items-center gap-6 editorial-shadow">
+<div class="flex-1">
+<h3 class="serif-display text-2xl font-bold">Søndag</h3>
+<p class="text-lg text-on-surface-variant">Restemiddag</p>
+</div>
+<div class="px-4 py-2 bg-surface-variant rounded-full text-xs font-bold uppercase tracking-tight">Bærekraftig</div>
+</div>
+</div>
+</div>
+<!-- Floating Quick Action for Mobile (Hidden on Desktop per instruction if FAB is suppressed, but here as a placeholder for context) -->
+<div class="md:hidden fixed bottom-28 right-6">
+<button class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary-container text-white shadow-2xl flex items-center justify-center scale-110">
+<span class="material-symbols-outlined text-3xl">calendar_add_on</span>
+</button>
+</div>
+</main>
+<!-- Navigation Drawer (Desktop Hidden, Mobile Triggered) -->
+<!-- (Normally hidden, shown here as a logic shell) -->
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#fef9ee]/90 dark:bg-stone-900/90 backdrop-blur-xl z-50 rounded-t-[3rem] border-t border-[#1d1c16]/5 shadow-[0_-8px_32px_rgba(29,28,22,0.08)]">
+<a class="flex flex-col items-center justify-center text-[#2d6a4f]/60 dark:text-stone-400 px-4 py-2 hover:text-[#0f5238] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">shopping_basket</span>
+<span class="font-sans text-[10px] font-medium tracking-tight mt-1">Liste</span>
+</a>
+<!-- Active State: Planlegger -->
+<a class="flex flex-col items-center justify-center bg-[#2d6a4f] text-white rounded-full px-5 py-2 scale-110 -translate-y-1 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+<span class="font-sans text-[10px] font-medium tracking-tight mt-1">Planlegger</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#2d6a4f]/60 dark:text-stone-400 px-4 py-2 hover:text-[#0f5238] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">layers</span>
+<span class="font-sans text-[10px] font-medium tracking-tight mt-1">Maler</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#2d6a4f]/60 dark:text-stone-400 px-4 py-2 hover:text-[#0f5238] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">share</span>
+<span class="font-sans text-[10px] font-medium tracking-tight mt-1">Deling</span>
+</a>
+</nav>
+</body></html>
