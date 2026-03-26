@@ -39,22 +39,13 @@
 }
 
 html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;overscroll-behavior:none;transition:background .3s,color .3s}
-#app{display:flex;flex-direction:column;height:100dvh;max-width:430px;margin:0 auto;overflow:hidden}
+#app{display:flex;flex-direction:column;height:100dvh;max-width:430px;margin:0 auto;overflow:hidden;position:relative}
 
-/* ── Onboarding ── */
-#onboard{position:fixed;inset:0;z-index:999;background:var(--ob-grad);display:flex;flex-direction:column;max-width:430px;margin:0 auto}
-.ob-slides{flex:1;display:flex;overflow:hidden}
-.ob-slide{min-width:100%;padding:56px 36px 24px;display:flex;flex-direction:column;justify-content:flex-end}
-.ob-illo{flex:1;display:flex;align-items:center;justify-content:center;font-size:88px}
-.ob-tag{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--am);font-weight:500;margin-bottom:10px}
-.ob-h{font-family:'Playfair Display',serif;font-size:30px;line-height:1.2;margin-bottom:12px}
-.ob-p{font-size:15px;color:var(--soft);line-height:1.6}
-.ob-bottom{padding:20px 36px max(32px,env(safe-area-inset-bottom));background:var(--ob-grad)}
-.ob-dots{display:flex;gap:6px;justify-content:center;margin-bottom:20px}
-.ob-dot{width:6px;height:6px;border-radius:3px;background:var(--ghost);transition:all .3s}
-.ob-dot.on{width:20px;background:var(--accent)}
-.ob-btn{width:100%;padding:16px;background:var(--btn-grad);color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:500;font-family:inherit;cursor:pointer}
-.ob-skip{width:100%;padding:10px;background:none;border:none;color:var(--ghost);font-size:14px;font-family:inherit;cursor:pointer;margin-top:8px}
+/* ── Splash ── */
+#onboard{position:fixed;inset:0;z-index:999;background:var(--ob-grad);display:flex;align-items:center;justify-content:center;max-width:430px;margin:0 auto;transition:opacity .5s ease}
+.splash-logo{font-family:'Playfair Display',serif;font-size:72px;font-weight:700;font-style:italic;color:var(--accent);text-align:center;animation:splashIn .7s cubic-bezier(.34,1.2,.64,1) both}
+.splash-tagline{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);text-align:center;margin-top:10px;animation:splashIn .7s .2s cubic-bezier(.34,1.2,.64,1) both}
+@keyframes splashIn{from{opacity:0;transform:translateY(24px) scale(.9)}to{opacity:1;transform:none}}
 
 /* ── Header ── */
 .hdr{padding:52px 24px 14px;background:rgba(254,249,238,.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:10;flex-shrink:0;transition:background .3s}
@@ -107,9 +98,12 @@ html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;colo
 .sum-done{font-size:13px;color:var(--accent);font-weight:500;cursor:pointer}
 
 /* ── List ── */
-.list{flex:1;overflow-y:auto;background:var(--surface);scrollbar-width:none;padding-bottom:130px;transition:background .3s}
+.list{background:var(--surface);scrollbar-width:none;padding-bottom:130px;transition:background .3s}
 .list::-webkit-scrollbar{display:none}
-.store-hdr{display:flex;align-items:center;gap:10px;padding:14px 24px 10px;background:var(--surface2);position:sticky;top:0;z-index:5;transition:background .3s}
+/* ── Share tabs ── */
+.sh-tab{flex:1;padding:9px;border:none;background:none;border-radius:100px;font-size:14px;font-weight:500;font-family:inherit;color:var(--soft);cursor:pointer;transition:all .2s}
+.sh-tab.on{background:var(--surface);color:var(--ink);box-shadow:var(--sh)}
+.store-hdr{display:flex;align-items:center;gap:10px;padding:14px 24px 10px;background:var(--surface2);transition:background .3s}
 .sbadge{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;font-style:italic;color:var(--accent);padding:0}
 .scount{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--al);padding:3px 10px;border-radius:100px;margin-left:auto}
 .cat-row{display:flex;align-items:center;padding:8px 24px 4px;gap:8px}
@@ -214,7 +208,7 @@ html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;colo
 .iinfo{flex:1;min-width:0}
 .iname{font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .2s,text-decoration .2s}
 .isub{font-size:12px;color:var(--soft);margin-top:2px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.by-tag{font-size:11px;color:var(--am);font-weight:500}
+.by-av{width:20px;height:20px;border-radius:50%;background:#9B8EA8;color:#fff;font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;vertical-align:middle}
 .price-tag{font-size:12px;color:var(--ghost)}
 .alt-tag{font-size:11px;color:var(--ghost)}
 
@@ -396,18 +390,11 @@ html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;colo
 <body>
 <canvas id="confetti"></canvas>
 
-<!-- Onboarding -->
+<!-- Splash -->
 <div id="onboard">
-  <div class="ob-slides" id="obSlides">
-    <div class="ob-slide"><div class="ob-illo">🛒</div><div class="ob-tag">Velkommen til Kurv</div><div class="ob-h">Handlelistene dine, elegant og enkelt</div><div class="ob-p">Hold oversikt, handle smartere — gjør det til en glede, ikke en plikt.</div></div>
-    <div class="ob-slide"><div class="ob-illo">🗺</div><div class="ob-tag">Handlerute</div><div class="ob-h">Sortert etter butikk og avdeling</div><div class="ob-p">Kurv organiserer varene dine slik du møter dem i butikken.</div></div>
-    <div class="ob-slide"><div class="ob-illo">✨</div><div class="ob-tag">Detaljer som gleder</div><div class="ob-h">En app som føles som den er laget for deg</div><div class="ob-p">Myke animasjoner og gjennomtenkte detaljer i hvert eneste trykk.</div></div>
-    <div class="ob-slide"><div class="ob-illo">👫</div><div class="ob-tag">Del med noen</div><div class="ob-h">Handle sammen, uansett hvor dere er</div><div class="ob-p" style="margin-bottom:16px">Inviter samboer med én lenke.</div><input class="finp" id="obName" placeholder="Hva heter du?" autocomplete="given-name" onkeydown="if(event.key==='Enter')finishOB()"></div>
-  </div>
-  <div class="ob-bottom">
-    <div class="ob-dots" id="obDots"></div>
-    <button class="ob-btn" id="obBtn" onclick="obNext()">Fortsett</button>
-    <button class="ob-skip" onclick="finishOB()">Hopp over</button>
+  <div>
+    <div class="splash-logo">Kurv</div>
+    <div class="splash-tagline">Din handleliste</div>
   </div>
 </div>
 
@@ -438,7 +425,7 @@ html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;colo
   </div>
 
   <!-- List view -->
-  <div id="view-list" style="display:flex;flex-direction:column;flex:1;overflow:hidden;min-height:0">
+  <div id="view-list" style="display:flex;flex-direction:column;flex:1;overflow-y:auto;min-height:0">
     <div class="tabs-wrap"><div class="tabs" id="tabs"></div></div>
     <div class="vbar">
       <div class="vbar-l">🗺 Butikk → kategori</div>
@@ -491,21 +478,36 @@ html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;colo
 
 <div class="ovl" id="shOvl" onclick="closeShare()"></div>
 <div class="sheet" id="shSh">
-  <div class="handle"></div><div class="stitle">Del liste</div>
-  <div class="share-card">
-    <div style="font-size:13px;color:var(--soft)">Inviter noen til å redigere</div>
-    <div class="share-code">K7-4X</div>
-    <div class="share-sub">Skriv inn koden i Kurv-appen</div>
-    <button class="share-link-btn" onclick="copyLink()">kurv.app/join/K7-4X · Trykk for å kopiere</button>
+  <div class="handle"></div>
+  <div style="display:flex;gap:0;background:var(--surface2);border-radius:100px;padding:4px;margin-bottom:20px">
+    <button id="shTabDel" class="sh-tab on" onclick="shTab('del')">Del liste</button>
+    <button id="shTabJoin" class="sh-tab" onclick="shTab('join')">Bli med</button>
   </div>
-  <div class="share-methods">
-    <button class="sm" onclick="shareM('SMS')"><div class="sm-ico">💬</div><div class="sm-lbl">Send SMS</div><div class="sm-sub">iMessage</div></button>
-    <button class="sm" onclick="copyLink()"><div class="sm-ico">🔗</div><div class="sm-lbl">Kopier lenke</div><div class="sm-sub">Lim inn</div></button>
-    <button class="sm" onclick="shareM('QR-kode')"><div class="sm-ico">⬛</div><div class="sm-lbl">QR-kode</div><div class="sm-sub">Skann</div></button>
-    <button class="sm" onclick="shareM('E-post')"><div class="sm-ico">✉️</div><div class="sm-lbl">E-post</div><div class="sm-sub">Inviter</div></button>
+  <div id="shDel">
+    <div class="share-card">
+      <div style="font-size:13px;color:var(--soft)">Inviter noen til å redigere</div>
+      <div class="share-code">K7-4X</div>
+      <div class="share-sub">Del denne koden eller lenken</div>
+      <button class="share-link-btn" onclick="copyLink()">kurv.app/join/K7-4X · Trykk for å kopiere</button>
+    </div>
+    <div class="share-methods">
+      <button class="sm" onclick="shareM('SMS')"><div class="sm-ico">💬</div><div class="sm-lbl">Send SMS</div><div class="sm-sub">iMessage</div></button>
+      <button class="sm" onclick="copyLink()"><div class="sm-ico">🔗</div><div class="sm-lbl">Kopier lenke</div><div class="sm-sub">Lim inn</div></button>
+      <button class="sm" onclick="shareM('QR-kode')"><div class="sm-ico">⬛</div><div class="sm-lbl">QR-kode</div><div class="sm-sub">Skann</div></button>
+      <button class="sm" onclick="shareM('E-post')"><div class="sm-ico">✉️</div><div class="sm-lbl">E-post</div><div class="sm-sub">Inviter</div></button>
+    </div>
+    <div style="margin-top:18px;padding:14px;background:var(--surface2);border-radius:10px;font-size:13px;color:var(--soft);line-height:1.6">
+      📱 <strong style="color:var(--ink)">Installer på iPhone:</strong> Safari → Del → «Legg til på hjemskjerm»
+    </div>
   </div>
-  <div style="margin-top:18px;padding:14px;background:var(--surface2);border-radius:10px;font-size:13px;color:var(--soft);line-height:1.6">
-    📱 <strong style="color:var(--ink)">Installer på iPhone:</strong> Safari → Del → «Legg til på hjemskjerm»
+  <div id="shJoin" style="display:none">
+    <div style="text-align:center;padding:24px 0 20px">
+      <div style="font-size:40px;margin-bottom:10px">🔗</div>
+      <div style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px">Bli med i en liste</div>
+      <div style="font-size:14px;color:var(--soft);line-height:1.6">Få en kode fra den som eier listen og skriv den inn nedenfor.</div>
+    </div>
+    <div class="fg"><div class="flbl">Listekode</div><input class="finp" id="joinCode" placeholder="f.eks. K7-4X" autocomplete="off" style="text-align:center;font-size:22px;letter-spacing:.2em;font-weight:600" oninput="this.value=this.value.toUpperCase()"></div>
+    <button class="sbtn" onclick="joinList()">Bli med i listen</button>
   </div>
 </div>
 
@@ -513,6 +515,9 @@ html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;colo
 <div class="sheet" id="hSh"><div class="handle"></div><div class="stitle">Tidligere handlet</div><div id="hbody"></div></div>
 <div class="ovl" id="dayOvl" onclick="closeDaySh()"></div>
 <div class="sheet" id="daySh"><div class="handle"></div><div class="stitle" id="dayShTitle"></div><div id="dayShBody"></div></div>
+
+<div class="ovl" id="tmplOvl" onclick="closeTemplate()"></div>
+<div class="sheet" id="tmplSh"><div class="handle"></div><div class="stitle" id="tmplShTitle"></div><div id="tmplShBody"></div></div>
 
 <div id="toast"></div>
 
@@ -535,11 +540,21 @@ const CORD=CATS.map(c=>c.key);
 const DAYS=['Mandag','Tirsdag','Onsdag','Torsdag','Fredag','Lørdag','Søndag'];
 const TODAY_IDX=(new Date().getDay()+6)%7;
 const TEMPLATES=[
-  {id:'middag',ico:'🍝',name:'Ukesmiddager',desc:'7 middagsretter med ingredienser',items:['Pasta penne','Tomatboks','Kyllingfilet','Ris','Laks','Brokkoli','Løk','Hvitløk','Paprika','Rømme','Kjøttdeig']},
-  {id:'frokost',ico:'🥣',name:'Frokost & lunsj',desc:'Alt til en god start på dagen',items:['Havregryn','Melk','Bananer','Egg','Brød','Smør','Ost','Skinke','Appelsinjuice']},
-  {id:'baking',ico:'🧁',name:'Bakekos',desc:'Kaker og boller',items:['Hvetemel','Sukker','Smør','Egg','Gjær','Melk','Vaniljesukker','Bakepulver','Sjokolade']},
-  {id:'rengjoring',ico:'🧹',name:'Rengjøring',desc:'Husholdningsartikler',items:['Oppvaskmiddel','Toalettpapir','Tørkepapir','Allrengjøring','Wc-rens','Søppelsekker']},
-  {id:'grill',ico:'🍖',name:'Grillkveld',desc:'Alt til en perfekt grillkveld',items:['Pølser','Burgerbuns','Kyllingvinger','Grillkrydder','Maiskolber','Coleslaw','Ketchup','Sennep']},
+  {id:'middag',ico:'🍝',name:'Ukesmiddager',desc:'7 middagsretter med ingredienser',portions:4,items:[
+    {name:'Pasta penne',price:18},{name:'Tomatboks',price:14},{name:'Kyllingfilet',price:75},{name:'Ris',price:22},{name:'Laks',price:89},{name:'Brokkoli',price:25},{name:'Løk',price:8},{name:'Hvitløk',price:12},{name:'Paprika',price:15},{name:'Rømme',price:22},{name:'Kjøttdeig',price:65}
+  ]},
+  {id:'frokost',ico:'🥣',name:'Frokost & lunsj',desc:'Alt til en god start på dagen',portions:2,items:[
+    {name:'Havregryn',price:28},{name:'Melk',price:25},{name:'Bananer',price:15},{name:'Egg',price:38},{name:'Brød',price:42},{name:'Smør',price:35},{name:'Ost',price:55},{name:'Skinke',price:45},{name:'Appelsinjuice',price:36}
+  ]},
+  {id:'baking',ico:'🧁',name:'Bakekos',desc:'Kaker og boller',portions:8,items:[
+    {name:'Hvetemel',price:22},{name:'Sukker',price:18},{name:'Smør',price:35},{name:'Egg',price:38},{name:'Gjær',price:8},{name:'Melk',price:25},{name:'Vaniljesukker',price:12},{name:'Bakepulver',price:15},{name:'Sjokolade',price:35}
+  ]},
+  {id:'rengjoring',ico:'🧹',name:'Rengjøring',desc:'Husholdningsartikler',portions:1,items:[
+    {name:'Oppvaskmiddel',price:35},{name:'Toalettpapir',price:59},{name:'Tørkepapir',price:45},{name:'Allrengjøring',price:55},{name:'Wc-rens',price:38},{name:'Søppelsekker',price:42}
+  ]},
+  {id:'grill',ico:'🍖',name:'Grillkveld',desc:'Alt til en perfekt grillkveld',portions:4,items:[
+    {name:'Pølser',price:45},{name:'Burgerbuns',price:28},{name:'Kyllingvinger',price:89},{name:'Grillkrydder',price:35},{name:'Maiskolber',price:18},{name:'Coleslaw',price:25},{name:'Ketchup',price:28},{name:'Sennep',price:22}
+  ]},
 ];
 
 // ─── State ───────────────────────────────────────
@@ -631,33 +646,26 @@ function launchConfetti(){
   draw();
 }
 
-// ─── Onboarding ──────────────────────────────────
-let obP=0;
-function renderObDots(){
-  document.getElementById('obDots').innerHTML=Array.from({length:4},(_,i)=>`<div class="ob-dot${i===obP?' on':''}"></div>`).join('');
-  document.getElementById('obSlides').style.transform=`translateX(-${obP*100}%)`;
-  document.getElementById('obSlides').style.transition=obP===0?'none':'transform .35s cubic-bezier(.4,0,.2,1)';
-  document.getElementById('obBtn').textContent=obP===3?'Kom i gang!':'Fortsett';
-}
-function obNext(){if(obP<3){obP++;renderObDots();if(obP===3)setTimeout(()=>document.getElementById('obName')?.focus(),380)}else finishOB()}
-function finishOB(){
-  const n=document.getElementById('obName')?.value.trim();
-  if(n){myName=n[0].toUpperCase();save()}
-  document.getElementById('onboard').style.opacity='0';
-  document.getElementById('onboard').style.transition='opacity .4s';
+// ─── Splash ──────────────────────────────────────
+function showSplash(){
+  const ob=document.getElementById('onboard');
   setTimeout(()=>{
-    document.getElementById('onboard').style.display='none';
-    const app=document.getElementById('app');app.style.display='flex';app.style.flexDirection='column';
-    document.getElementById('youAv').textContent=myName;
-    localStorage.setItem('k_ob','1');render();
-  },400);
+    ob.style.opacity='0';
+    setTimeout(()=>{
+      ob.style.display='none';
+      const app=document.getElementById('app');app.style.display='flex';app.style.flexDirection='column';
+      document.getElementById('youAv').textContent=myName;
+      localStorage.setItem('k_ob','1');render();
+    },500);
+  },1600);
 }
 if(localStorage.getItem('k_ob')==='1'){
   document.getElementById('onboard').style.display='none';
   const app=document.getElementById('app');app.style.display='flex';app.style.flexDirection='column';
   document.getElementById('youAv').textContent=myName;
-  renderObDots();
-}else renderObDots();
+}else{
+  showSplash();
+}
 
 // ─── View switch ─────────────────────────────────
 function switchView(v){
@@ -678,7 +686,7 @@ function renderTabs(){
     LISTS.map((l,i)=>`<button class="tab${i===AL?' on':''}" onclick="swList(${i})">${l}</button>`).join('')+
     `<button class="tab add" onclick="addList()">＋</button>`;
 }
-function swList(i){AL=i;showDone=false;save();renderList();updateSum()}
+function swList(i){AL=i;showDone=false;save();renderTabs();renderList();updateSum()}
 function addList(){const n=prompt('Navn på ny liste:');if(n&&n.trim()){LISTS.push(n.trim());AL=LISTS.length-1;save();render()}}
 
 // ─── List render ──────────────────────────────────
@@ -737,7 +745,7 @@ function wrapItem(it){
       <div class="iinfo">
         <div class="iname">${it.name}</div>
         <div class="isub">
-          ${it.by&&it.by!==myName?`<span class="by-tag">+ ${it.by}</span>`:''}
+          ${it.by&&it.by!==myName?`<span class="by-av">${it.by[0].toUpperCase()}</span>`:''}
           ${it.price?`<span class="price-tag">${it.qty>1?it.qty+'×':''}${it.price} kr</span>`:''}
           ${it.alt?`<span class="alt-tag">↪ ${it.alt}</span>`:''}
         </div>
@@ -960,6 +968,18 @@ function delItem(id){items=items.filter(i=>i.id!==id);save();closeDet();render()
 // ─── Share ────────────────────────────────────────
 function openShare(){document.getElementById('shOvl').classList.add('open');document.getElementById('shSh').classList.add('open')}
 function closeShare(){document.getElementById('shOvl').classList.remove('open');document.getElementById('shSh').classList.remove('open')}
+function shTab(tab){
+  document.getElementById('shDel').style.display=tab==='del'?'':'none';
+  document.getElementById('shJoin').style.display=tab==='join'?'':'none';
+  document.getElementById('shTabDel').classList.toggle('on',tab==='del');
+  document.getElementById('shTabJoin').classList.toggle('on',tab==='join');
+}
+function joinList(){
+  const code=document.getElementById('joinCode').value.trim();
+  if(!code){showToast('Skriv inn en kode');return;}
+  showToast(`Kobler til liste ${code}… (demo)`);
+  closeShare();
+}
 function copyLink(){try{navigator.clipboard.writeText('https://kurv.app/join/K7-4X')}catch(e){}showToast('Lenke kopiert! 🔗')}
 function shareM(m){showToast(`${m} åpnes… (demo)`);closeShare()}
 
@@ -1013,18 +1033,47 @@ function addWeekToList(){const all=[...new Set(Object.values(weekPlan).flat())];
 // ─── Templates ────────────────────────────────────
 function renderTemplates(){
   document.getElementById('templates-wrap').innerHTML=`
-    <div class="planner-header"><div class="planner-title">Maler</div><div class="planner-sub">Legg til ferdige varelister med ett trykk.</div></div>
+    <div class="planner-header"><div class="planner-title">Maler</div><div class="planner-sub">Trykk for å se innhold og legge til i listen.</div></div>
     <div class="tmpl-label">Populære maler</div>
     <div class="tmpl-grid">${TEMPLATES.map(t=>`
-      <div class="tmpl-card">
+      <div class="tmpl-card" onclick="openTemplate('${t.id}')">
         <div class="tmpl-ico">${t.ico}</div>
         <div class="tmpl-info"><div class="tmpl-name">${t.name}</div><div class="tmpl-desc">${t.desc}</div></div>
-        <span class="tmpl-count">${t.items.length}</span>
-        <button class="tmpl-add" onclick="addTemplate('${t.id}')">+</button>
+        <span class="tmpl-count">${t.items.length} varer</span>
       </div>`).join('')}
     </div>`;
 }
-function addTemplate(tid){const t=TEMPLATES.find(x=>x.id===tid);if(!t)return;let a=0;t.items.forEach(name=>{if(!items.find(it=>it.name===name&&it.list===AL&&!it.done)){items.unshift({id:nid++,name,qty:1,cat:'Annet',store:'Alle',done:false,alt:'',list:AL,price:0,recur:false,by:myName});a++}});save();switchView('list');render();showToast(`${a} varer fra «${t.name}» lagt til ✓`)}
+function addTemplate(tid){const t=TEMPLATES.find(x=>x.id===tid);if(!t)return;let a=0;t.items.forEach(it=>{const name=typeof it==='string'?it:it.name;const price=typeof it==='object'?it.price:0;if(!items.find(i=>i.name===name&&i.list===AL&&!i.done)){items.unshift({id:nid++,name,qty:1,cat:'Annet',store:'Alle',done:false,alt:'',list:AL,price,recur:false,by:myName});a++}});save();switchView('list');render();showToast(`${a} varer fra «${t.name}» lagt til ✓`)}
+function openTemplate(tid){
+  const t=TEMPLATES.find(x=>x.id===tid);if(!t)return;
+  const total=t.items.reduce((s,it)=>s+(it.price||0),0);
+  document.getElementById('tmplShTitle').textContent=t.name;
+  document.getElementById('tmplShBody').innerHTML=`
+    <div style="display:flex;gap:14px;margin-bottom:22px;align-items:center">
+      <div style="font-size:44px">${t.ico}</div>
+      <div>
+        <div style="font-size:14px;color:var(--soft);margin-bottom:8px">${t.desc}</div>
+        <div style="display:flex;gap:8px">
+          <span style="font-size:12px;font-weight:600;background:var(--al);color:var(--accent);padding:3px 10px;border-radius:100px">${t.items.length} varer</span>
+          <span style="font-size:12px;font-weight:600;background:var(--surface2);color:var(--soft);padding:3px 10px;border-radius:100px">👥 ${t.portions} pers.</span>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--surface2);border-radius:14px;overflow:hidden;margin-bottom:18px">
+      ${t.items.map((it,i)=>`
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:13px 16px${i>0?';box-shadow:inset 0 1px 0 var(--line)':''}">
+          <span style="font-size:14px">${it.name}</span>
+          <span style="font-size:13px;color:var(--soft)">${it.price?it.price+' kr':'–'}</span>
+        </div>`).join('')}
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:13px 16px;background:var(--al);box-shadow:inset 0 1px 0 var(--line)">
+        <span style="font-size:14px;font-weight:700;color:var(--accent)">Estimert totalt</span>
+        <span style="font-size:14px;font-weight:700;color:var(--accent)">≈ ${total} kr</span>
+      </div>
+    </div>
+    <button class="sbtn" onclick="addTemplate('${tid}');closeTemplate()">Legg til i listen ✓</button>`;
+  document.getElementById('tmplOvl').classList.add('open');document.getElementById('tmplSh').classList.add('open');
+}
+function closeTemplate(){document.getElementById('tmplOvl').classList.remove('open');document.getElementById('tmplSh').classList.remove('open')}
 
 // ─── Toast ────────────────────────────────────────
 let _tid;
