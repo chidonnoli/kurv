@@ -1,4 +1,4 @@
-const CACHE = 'kurv-v5';
+const CACHE = 'kurv-v6';
 const ASSETS = [
   './handlelist.html',
   './manifest.json',
