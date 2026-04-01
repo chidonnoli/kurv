@@ -392,6 +392,7 @@ html,body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--ink)
           <button class="icon-btn" onclick="openSett()">⚙️</button>
           <div class="avatars">
             <div class="av you" id="youAv">D</div>
+            <div id="friendAvatars"></div>
             <div class="av plus" onclick="openShare()">+</div>
           </div>
         </div>
@@ -460,36 +461,7 @@ html,body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--ink)
 <div class="ovl" id="shOvl" onclick="closeShare()"></div>
 <div class="sheet" id="shSh">
   <div class="handle"></div>
-  <div style="display:flex;gap:0;background:var(--surface2);border-radius:100px;padding:4px;margin-bottom:20px">
-    <button id="shTabDel" class="sh-tab on" onclick="shTab('del')">Del liste</button>
-    <button id="shTabJoin" class="sh-tab" onclick="shTab('join')">Bli med</button>
-  </div>
-  <div id="shDel">
-    <div class="share-card">
-      <div style="font-size:13px;color:var(--soft)">Inviter noen til å redigere</div>
-      <div class="share-code">K7-4X</div>
-      <div class="share-sub">Del denne koden eller lenken</div>
-      <button class="share-link-btn" onclick="copyLink()">kurv.app/join/K7-4X · Trykk for å kopiere</button>
-    </div>
-    <div class="share-methods">
-      <button class="sm" onclick="shareM('SMS')"><div class="sm-ico">💬</div><div class="sm-lbl">Send SMS</div><div class="sm-sub">iMessage</div></button>
-      <button class="sm" onclick="copyLink()"><div class="sm-ico">🔗</div><div class="sm-lbl">Kopier lenke</div><div class="sm-sub">Lim inn</div></button>
-      <button class="sm" onclick="shareM('QR-kode')"><div class="sm-ico">⬛</div><div class="sm-lbl">QR-kode</div><div class="sm-sub">Skann</div></button>
-      <button class="sm" onclick="shareM('E-post')"><div class="sm-ico">✉️</div><div class="sm-lbl">E-post</div><div class="sm-sub">Inviter</div></button>
-    </div>
-    <div style="margin-top:18px;padding:14px;background:var(--surface2);border-radius:10px;font-size:13px;color:var(--soft);line-height:1.6">
-      📱 <strong style="color:var(--ink)">Installer på iPhone:</strong> Safari → Del → «Legg til på hjemskjerm»
-    </div>
-  </div>
-  <div id="shJoin" style="display:none">
-    <div style="text-align:center;padding:24px 0 20px">
-      <div style="font-size:40px;margin-bottom:10px">🔗</div>
-      <div style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px">Bli med i en liste</div>
-      <div style="font-size:14px;color:var(--soft);line-height:1.6">Få en kode fra den som eier listen og skriv den inn nedenfor.</div>
-    </div>
-    <div class="fg"><div class="flbl">Listekode</div><input class="finp" id="joinCode" placeholder="f.eks. K7-4X" autocomplete="off" style="text-align:center;font-size:22px;letter-spacing:.2em;font-weight:600" oninput="this.value=this.value.toUpperCase()"></div>
-    <button class="sbtn" onclick="joinList()">Bli med i listen</button>
-  </div>
+  <div id="shBody"></div>
 </div>
 
 <div class="ovl" id="hOvl" onclick="closeHist()"></div>
@@ -532,6 +504,27 @@ let CORD=CATS.map(c=>c.key);
 let ICO2=Object.fromEntries(CATS.map(c=>[c.key,c.ico]));
 function recomputeICO(){ICO2=Object.fromEntries(CATS.map(c=>[c.key,c.ico]))}
 function recomputeCORD(){CORD=CATS.map(c=>c.key)}
+
+// ─── Friend / sharing codes ───────────────────────
+function genCode(){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return Array.from({length:6},()=>chars[Math.floor(Math.random()*chars.length)]).join('');
+}
+// friends = [{code, name, addedAt}]
+// listAccess = { listIndex: [friendCode, ...] }
+function getListAccessCodes(li){return listAccess[li]||[]}
+function setListAccess(li,codes){listAccess[li]=codes;save()}
+function friendByCode(code){return friends.find(f=>f.code===code)}
+function addFriend(code,name){
+  if(friends.find(f=>f.code===code))return false;
+  friends.push({code,name:name||code,addedAt:new Date().toLocaleDateString('nb')});
+  save();return true;
+}
+function removeFriend(code){
+  friends=friends.filter(f=>f.code!==code);
+  Object.keys(listAccess).forEach(li=>{listAccess[li]=listAccess[li].filter(c=>c!==code)});
+  save();
+}
 const DAYS=['Mandag','Tirsdag','Onsdag','Torsdag','Fredag','Lørdag','Søndag'];
 const TODAY_IDX=(new Date().getDay()+6)%7;
 const TEMPLATES=[
@@ -554,7 +547,7 @@ const TEMPLATES=[
 
 // ─── State ───────────────────────────────────────
 let AL=0,showDone=false,snew='',selectedCat='Annet',nid=100,myName='D',darkMode=false,currentView='list',_detStore='Alle',_detId=null;
-let items=[],weekPlan={},hist=[],LISTS=[];
+let items=[],weekPlan={},hist=[],LISTS=[],friends=[],listAccess={},myCode='';
 const DEFS={
   items:[],
   lists:['Handleliste'],
@@ -579,7 +572,7 @@ function autoCategory(name){
 }
 
 // ─── Persistence ─────────────────────────────────
-function save(){try{localStorage.setItem('k_i',JSON.stringify(items));localStorage.setItem('k_l',JSON.stringify(LISTS));localStorage.setItem('k_w',JSON.stringify(weekPlan));localStorage.setItem('k_h',JSON.stringify(hist));localStorage.setItem('k_d',darkMode?'1':'0');localStorage.setItem('k_n',myName);localStorage.setItem('k_id',String(nid));localStorage.setItem('k_al',String(AL));localStorage.setItem('k_s',JSON.stringify(STORES));localStorage.setItem('k_c',JSON.stringify(CATS))}catch(e){}}
+function save(){try{localStorage.setItem('k_i',JSON.stringify(items));localStorage.setItem('k_l',JSON.stringify(LISTS));localStorage.setItem('k_w',JSON.stringify(weekPlan));localStorage.setItem('k_h',JSON.stringify(hist));localStorage.setItem('k_d',darkMode?'1':'0');localStorage.setItem('k_n',myName);localStorage.setItem('k_id',String(nid));localStorage.setItem('k_al',String(AL));localStorage.setItem('k_s',JSON.stringify(STORES));localStorage.setItem('k_c',JSON.stringify(CATS));localStorage.setItem('k_fr',JSON.stringify(friends));localStorage.setItem('k_la',JSON.stringify(listAccess))}catch(e){}}
 function load(){
   try{
     items=JSON.parse(localStorage.getItem('k_i')||'null')||DEFS.items.map(i=>({...i}));
@@ -593,6 +586,9 @@ function load(){
     const al=localStorage.getItem('k_al');if(al!==null)AL=Math.min(parseInt(al),LISTS.length-1);
     const ks=JSON.parse(localStorage.getItem('k_s')||'null');if(ks&&Array.isArray(ks)){STORES.length=0;ks.forEach(x=>STORES.push(x))}
     const kc=JSON.parse(localStorage.getItem('k_c')||'null');if(kc&&Array.isArray(kc)){CATS.length=0;kc.forEach(x=>CATS.push(x));recomputeICO();recomputeCORD()}
+    const fr=JSON.parse(localStorage.getItem('k_fr')||'null');if(fr)friends=fr;
+    const la=JSON.parse(localStorage.getItem('k_la')||'null');if(la)listAccess=la;
+    const mc=localStorage.getItem('k_mc');if(mc){myCode=mc}else{myCode=genCode();localStorage.setItem('k_mc',myCode)}
   }catch(e){items=DEFS.items.map(i=>({...i}));LISTS.length=0;DEFS.lists.forEach(x=>LISTS.push(x));weekPlan={...DEFS.week};hist=[...DEFS.hist]}
 }
 load();
@@ -683,7 +679,7 @@ function renderTabs(){
     LISTS.map((l,i)=>`<button class="tab${i===AL?' on':''}" onclick="swList(${i})">${l}</button>`).join('')+
     `<button class="tab add" onclick="addList()">＋</button>`;
 }
-function swList(i){AL=i;showDone=false;save();renderTabs();renderList();updateSum()}
+function swList(i){AL=i;showDone=false;save();renderTabs();renderList();updateSum();renderFriendAvatars()}
 function addList(){const n=prompt('Navn på ny liste:');if(n&&n.trim()){LISTS.push(n.trim());AL=LISTS.length-1;save();render()}}
 
 // ─── List render ──────────────────────────────────
@@ -971,22 +967,96 @@ function closeDet(){
 function delItem(id){items=items.filter(i=>i.id!==id);save();closeDet();render()}
 
 // ─── Share ────────────────────────────────────────
-function openShare(){document.getElementById('shOvl').classList.add('open');document.getElementById('shSh').classList.add('open')}
+let _shTab='share';
+function openShare(){
+  renderShare();
+  document.getElementById('shOvl').classList.add('open');
+  document.getElementById('shSh').classList.add('open');
+}
 function closeShare(){document.getElementById('shOvl').classList.remove('open');document.getElementById('shSh').classList.remove('open')}
-function shTab(tab){
-  document.getElementById('shDel').style.display=tab==='del'?'':'none';
-  document.getElementById('shJoin').style.display=tab==='join'?'':'none';
-  document.getElementById('shTabDel').classList.toggle('on',tab==='del');
-  document.getElementById('shTabJoin').classList.toggle('on',tab==='join');
+function renderShare(){
+  _shTab=_shTab||'share';
+  const el=document.getElementById('shBody');
+  const tabs=[['share','Del liste'],['friends','Venner'],['join','Bli med']];
+  const access=getListAccessCodes(AL);
+  const listFriends=friends.filter(f=>access.includes(f.code));
+  const otherFriends=friends.filter(f=>!access.includes(f.code));
+  let body='';
+  if(_shTab==='share'){
+    body=`
+      <div style="margin-bottom:18px">
+        <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:500;margin-bottom:10px">Din kode</div>
+        <div style="background:var(--surface2);border-radius:14px;padding:20px;text-align:center">
+          <div style="font-family:'Playfair Display',serif;font-size:38px;letter-spacing:.2em;color:var(--ink);margin-bottom:6px">${myCode}</div>
+          <div style="font-size:12px;color:var(--soft)">Del denne med noen for å legge dem til som venn</div>
+        </div>
+      </div>
+      <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:500;margin-bottom:10px">Tilgang til «${LISTS[AL]}»</div>
+      ${listFriends.length===0?`<div style="font-size:14px;color:var(--ghost);padding:12px 0 16px">Ingen har tilgang ennå</div>`:''}
+      ${listFriends.map(f=>`
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 0;box-shadow:inset 0 1px 0 var(--line)">
+          <div style="width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0">${f.name[0].toUpperCase()}</div>
+          <div style="flex:1"><div style="font-size:15px">${f.name}</div><div style="font-size:12px;color:var(--ghost)">${f.code}</div></div>
+          <button onclick="toggleAccess('${f.code}')" style="font-size:12px;color:var(--warn);background:var(--wl);border:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-family:inherit">Fjern</button>
+        </div>`).join('')}
+      ${otherFriends.length>0?`
+        <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:500;margin:16px 0 10px">Legg til venn</div>
+        ${otherFriends.map(f=>`
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 0;box-shadow:inset 0 1px 0 var(--line)">
+            <div style="width:34px;height:34px;border-radius:50%;background:var(--surface2);color:var(--soft);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0">${f.name[0].toUpperCase()}</div>
+            <div style="flex:1"><div style="font-size:15px">${f.name}</div><div style="font-size:12px;color:var(--ghost)">${f.code}</div></div>
+            <button onclick="toggleAccess('${f.code}')" style="font-size:12px;color:var(--accent);background:var(--al);border:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-family:inherit">Gi tilgang</button>
+          </div>`).join('')}
+      `:''}`;
+  } else if(_shTab==='friends'){
+    body=`
+      <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:500;margin-bottom:10px">Dine venner</div>
+      ${friends.length===0?`<div style="font-size:14px;color:var(--ghost);padding:12px 0 16px">Ingen venner ennå. Legg til med koden deres.</div>`:''}
+      ${friends.map(f=>`
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 0;box-shadow:inset 0 1px 0 var(--line)">
+          <div style="width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0">${f.name[0].toUpperCase()}</div>
+          <div style="flex:1"><div style="font-size:15px">${f.name}</div><div style="font-size:12px;color:var(--ghost)">Lagt til ${f.addedAt}</div></div>
+          <button onclick="removeFriend('${f.code}');renderShare()" style="font-size:12px;color:var(--warn);background:var(--wl);border:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-family:inherit">Fjern</button>
+        </div>`).join('')}
+      <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:500;margin:20px 0 10px">Legg til venn</div>
+      <div class="fg"><div class="flbl">Vennnens kode</div><input class="finp" id="friendCode" placeholder="ABC123" autocomplete="off" style="text-transform:uppercase;letter-spacing:.1em" oninput="this.value=this.value.toUpperCase()"></div>
+      <div class="fg"><div class="flbl">Navn</div><input class="finp" id="friendName" placeholder="f.eks. Sofie" autocomplete="off"></div>
+      <button class="sbtn" onclick="doAddFriend()">Legg til venn</button>`;
+  } else {
+    body=`
+      <div style="padding:8px 0 24px">
+        <div style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:8px">Bli med i en liste</div>
+        <div style="font-size:14px;color:var(--soft);line-height:1.6">Be den som eier listen om å legge deg til. De trenger din kode:</div>
+        <div style="background:var(--surface2);border-radius:14px;padding:18px;text-align:center;margin-top:16px">
+          <div style="font-family:'Playfair Display',serif;font-size:38px;letter-spacing:.2em;color:var(--ink)">${myCode}</div>
+          <button onclick="copyMyCode()" style="margin-top:10px;font-size:13px;color:var(--accent);background:var(--al);border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-family:inherit">Kopier kode</button>
+        </div>
+      </div>`;
+  }
+  el.innerHTML=`
+    <div style="display:flex;gap:0;background:var(--surface2);border-radius:100px;padding:4px;margin-bottom:20px">
+      ${tabs.map(([id,lbl])=>`<button class="sh-tab${_shTab===id?' on':''}" onclick="_shTab='${id}';renderShare()">${lbl}</button>`).join('')}
+    </div>
+    ${body}`;
 }
-function joinList(){
-  const code=document.getElementById('joinCode').value.trim();
+function toggleAccess(code){
+  const li=String(AL);
+  if(!listAccess[li])listAccess[li]=[];
+  const idx=listAccess[li].indexOf(code);
+  if(idx===-1)listAccess[li].push(code);
+  else listAccess[li].splice(idx,1);
+  save();renderShare();
+}
+function doAddFriend(){
+  const code=(document.getElementById('friendCode')?.value||'').trim().toUpperCase();
+  const name=(document.getElementById('friendName')?.value||'').trim();
   if(!code){showToast('Skriv inn en kode');return;}
-  showToast(`Kobler til liste ${code}… (demo)`);
-  closeShare();
+  if(code===myCode){showToast('Det er din egen kode');return;}
+  if(!addFriend(code,name)){showToast('Allerede lagt til');return;}
+  showToast(`${name||code} lagt til`);
+  renderShare();
 }
-function copyLink(){try{navigator.clipboard.writeText('https://kurv.app/join/K7-4X')}catch(e){}showToast('Lenke kopiert! 🔗')}
-function shareM(m){showToast(`${m} åpnes… (demo)`);closeShare()}
+function copyMyCode(){try{navigator.clipboard.writeText(myCode)}catch(e){}showToast('Kode kopiert')}
 
 // ─── History ──────────────────────────────────────
 function openHist(){
@@ -1165,7 +1235,16 @@ const _sheetMap=[
 _sheetMap.forEach(([id,fn])=>addSheetSwipe(id,fn));
 
 // ─── Render ───────────────────────────────────────
-function render(){renderTabs();renderList();updateSum();renderSChips();renderCatPicker()}
+function renderFriendAvatars(){
+  const el=document.getElementById('friendAvatars');if(!el)return;
+  const access=getListAccessCodes(AL);
+  el.innerHTML=access.slice(0,3).map(code=>{
+    const f=friendByCode(code);
+    const lbl=f?f.name[0].toUpperCase():code[0];
+    return`<div class="av them" style="margin-left:-6px">${lbl}</div>`;
+  }).join('');
+}
+function render(){renderTabs();renderList();updateSum();renderSChips();renderCatPicker();renderFriendAvatars()}
 if(localStorage.getItem('k_ob')==='1')render();
 </script>
 </body>
