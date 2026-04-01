@@ -103,8 +103,8 @@ html,body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--ink)
 .store-hdr{display:flex;align-items:center;gap:10px;padding:14px 24px 10px;background:var(--surface2);transition:background .3s}
 .sbadge{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;font-style:italic;color:var(--accent);padding:0}
 .scount{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--al);padding:3px 10px;border-radius:100px;margin-left:auto}
-.cat-row{display:flex;align-items:center;padding:8px 24px 4px;gap:8px}
-.cat-lbl{font-family:'Playfair Display',serif;font-size:13px;font-style:italic;color:var(--soft);font-weight:400;letter-spacing:0}
+.cat-row{display:flex;align-items:center;padding:8px 24px 4px}
+.cat-lbl{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ghost)}
 
 /* ── Item wrapper — swipe mechanics ── */
 .item-wrap{position:relative;overflow:hidden}
@@ -192,14 +192,6 @@ html,body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--ink)
 }
 .item.done .chk-svg{opacity:1;transform:scale(1) rotate(0)}
 
-/* Category icon */
-.item-cat-ico{
-  font-size:20px;flex-shrink:0;
-  width:34px;height:34px;
-  display:flex;align-items:center;justify-content:center;
-  background:var(--surface2);border-radius:9px;
-  transition:transform .2s cubic-bezier(.34,1.56,.64,1),opacity .2s;
-}
 
 /* Item info */
 .iinfo{flex:1;min-width:0}
@@ -362,7 +354,7 @@ html,body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--ink)
 .tmpl-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
 .tmpl-card{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:transform .18s cubic-bezier(.34,1.4,.64,1)}
 .tmpl-card:active{transform:scale(.98)}
-.tmpl-ico{font-size:28px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--surface2);border-radius:10px;flex-shrink:0}
+.tmpl-ico{display:none}
 .tmpl-info{flex:1;min-width:0}
 .tmpl-name{font-size:15px;font-weight:500}
 .tmpl-desc{font-size:12px;color:var(--soft);margin-top:2px}
@@ -401,11 +393,9 @@ html,body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--ink)
           <button class="icon-btn" onclick="openSett()">⚙️</button>
           <div class="avatars">
             <div class="av you" id="youAv">D</div>
-            <div class="av them">S<div class="ndot" id="ndot"></div></div>
             <div class="av plus" onclick="openShare()">+</div>
           </div>
         </div>
-        <div class="pstatus" id="pstatus">Sofie aktiv for 3 min siden</div>
       </div>
     </div>
   </div>
@@ -421,7 +411,7 @@ html,body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--ink)
   <div id="view-list" style="display:flex;flex-direction:column">
     <div class="tabs-wrap"><div class="tabs" id="tabs"></div></div>
     <div class="vbar">
-      <div class="vbar-l">Butikk → kategori</div>
+      <div class="vbar-l">Sortert etter butikk</div>
     </div>
     <div class="sumbar">
       <span class="sum-count" id="sc">0 igjen</span>
@@ -546,25 +536,25 @@ function recomputeCORD(){CORD=CATS.map(c=>c.key)}
 const DAYS=['Mandag','Tirsdag','Onsdag','Torsdag','Fredag','Lørdag','Søndag'];
 const TODAY_IDX=(new Date().getDay()+6)%7;
 const TEMPLATES=[
-  {id:'middag',ico:'🍝',name:'Ukesmiddager',desc:'7 middagsretter med ingredienser',portions:4,items:[
+  {id:'middag',name:'Ukesmiddager',desc:'7 middagsretter med ingredienser',portions:4,store:'Meny',items:[
     {name:'Pasta penne',price:18},{name:'Tomatboks',price:14},{name:'Kyllingfilet',price:75},{name:'Ris',price:22},{name:'Laks',price:89},{name:'Brokkoli',price:25},{name:'Løk',price:8},{name:'Hvitløk',price:12},{name:'Paprika',price:15},{name:'Rømme',price:22},{name:'Kjøttdeig',price:65}
   ]},
-  {id:'frokost',ico:'🥣',name:'Frokost & lunsj',desc:'Alt til en god start på dagen',portions:2,items:[
+  {id:'frokost',name:'Frokost & lunsj',desc:'Alt til en god start på dagen',portions:2,store:'Rema 1000',items:[
     {name:'Havregryn',price:28},{name:'Melk',price:25},{name:'Bananer',price:15},{name:'Egg',price:38},{name:'Brød',price:42},{name:'Smør',price:35},{name:'Ost',price:55},{name:'Skinke',price:45},{name:'Appelsinjuice',price:36}
   ]},
-  {id:'baking',ico:'🧁',name:'Bakekos',desc:'Kaker og boller',portions:8,items:[
+  {id:'baking',name:'Bakekos',desc:'Kaker og boller',portions:8,store:'Meny',items:[
     {name:'Hvetemel',price:22},{name:'Sukker',price:18},{name:'Smør',price:35},{name:'Egg',price:38},{name:'Gjær',price:8},{name:'Melk',price:25},{name:'Vaniljesukker',price:12},{name:'Bakepulver',price:15},{name:'Sjokolade',price:35}
   ]},
-  {id:'rengjoring',ico:'🧹',name:'Rengjøring',desc:'Husholdningsartikler',portions:1,items:[
+  {id:'rengjoring',name:'Rengjøring',desc:'Husholdningsartikler',portions:1,store:'Kiwi',items:[
     {name:'Oppvaskmiddel',price:35},{name:'Toalettpapir',price:59},{name:'Tørkepapir',price:45},{name:'Allrengjøring',price:55},{name:'Wc-rens',price:38},{name:'Søppelsekker',price:42}
   ]},
-  {id:'grill',ico:'🍖',name:'Grillkveld',desc:'Alt til en perfekt grillkveld',portions:4,items:[
+  {id:'grill',name:'Grillkveld',desc:'Alt til en perfekt grillkveld',portions:4,store:'Kiwi',items:[
     {name:'Pølser',price:45},{name:'Burgerbuns',price:28},{name:'Kyllingvinger',price:89},{name:'Grillkrydder',price:35},{name:'Maiskolber',price:18},{name:'Coleslaw',price:25},{name:'Ketchup',price:28},{name:'Sennep',price:22}
   ]},
 ];
 
 // ─── State ───────────────────────────────────────
-let AL=0,showDone=false,snew='',selectedCat='Annet',nid=100,myName='D',darkMode=false,currentView='list';
+let AL=0,showDone=false,snew='',selectedCat='Annet',nid=100,myName='D',darkMode=false,currentView='list',_detStore='Alle';
 let items=[],weekPlan={},hist=[],LISTS=[];
 const DEFS={
   items:[
@@ -587,6 +577,22 @@ const DEFS={
   week:{0:['Pasta bolognese'],1:['Laksemiddag'],2:['Tacos'],3:[],4:['Hjemmelaget pizza'],5:['Grillmat'],6:['Søndagssteik']},
   hist:[{name:'Brie',date:'18. mars',store:'Meny',cat:'Meieri',price:89},{name:'Hvitvin',date:'11. mars',store:'Kiwi',cat:'Drikke',price:120}]
 };
+
+// ─── Auto-category ───────────────────────────────
+const CAT_KW={
+  'Frukt & grønt':['eple','banan','appelsin','tomat','agurk','salat','paprika','brokkoli','løk','hvitløk','gulrot','potet','sopp','spinat','mais','avocado','sitron','lime','druer','jordbær','bær','frukt','grønt','grønnsak','purre','blomkål','kål','selleri','squash','mango','ananas','melon'],
+  'Meieri':['melk','fløte','rømme','smør','ost','yoghurt','egg','margarin','kremfløte','crème','kesam','kvarg','kefir','créme'],
+  'Bakeri':['brød','rundstykke','baguette','bolle','croissant','kake','wienerbrød','knekkebrød','flatbrød','pitabrød','lefse','skolebrød'],
+  'Kjøtt & fisk':['kjøtt','laks','torsk','sei','reke','kylling','svin','biff','kotelett','pølse','bacon','skinke','karbonade','kalkun','lam','ribbe','medister','fiskebolle','fiskepudding','makrell','sardiner','tunfisk','schnitzel','kjøttdeig','karbonader'],
+  'Tørrmat':['pasta','spaghetti','ris','mel','havregryn','musli','cornflakes','linser','bønner','hermetikk','tomatboks','suppe','nudler','couscous','bygg','quinoa','pizza','kaviar'],
+  'Drikke':['juice','saft','brus','øl','vin','vann','kaffe','te','kaffekapsel','appelsinjuice','smoothie'],
+  'Hushold':['oppvaskmiddel','vaskemiddel','rengjøring','toalettpapir','tørkepapir','søppelsekk','wc-rens','såpe','sjampo','tannkrem','deodorant','allrengjøring','wc','oppvask'],
+};
+function autoCategory(name){
+  const l=name.toLowerCase();
+  for(const[cat,kws]of Object.entries(CAT_KW)){if(kws.some(k=>l.includes(k)))return cat}
+  return CATS[CATS.length-1]?.key||'Annet';
+}
 
 // ─── Persistence ─────────────────────────────────
 function save(){try{localStorage.setItem('k_i',JSON.stringify(items));localStorage.setItem('k_l',JSON.stringify(LISTS));localStorage.setItem('k_w',JSON.stringify(weekPlan));localStorage.setItem('k_h',JSON.stringify(hist));localStorage.setItem('k_d',darkMode?'1':'0');localStorage.setItem('k_n',myName);localStorage.setItem('k_id',String(nid));localStorage.setItem('k_al',String(AL));localStorage.setItem('k_s',JSON.stringify(STORES));localStorage.setItem('k_c',JSON.stringify(CATS))}catch(e){}}
@@ -612,7 +618,7 @@ function applyTheme(){
   document.documentElement.setAttribute('data-theme',darkMode?'dark':'light');
   document.getElementById('themeColor').setAttribute('content',darkMode?'#14130f':'#fef9ee');
 }
-function toggleDark(){darkMode=!darkMode;applyTheme();save();showToast(darkMode?'Mørk modus 🌙':'Lys modus ☀️')}
+function toggleDark(){darkMode=!darkMode;applyTheme();save()}
 applyTheme();
 
 // ─── PWA ─────────────────────────────────────────
@@ -720,7 +726,7 @@ function renderList(){
     html+=`<div><div class="store-hdr"><span class="sbadge">${s}</span><span class="scount">${si.length} ${si.length===1?'vare':'varer'}</span></div>`;
     CORD.forEach(c=>{
       if(!smap[s][c])return;
-      html+=`<div class="cat-row"><span class="cat-lbl">${ICO2[c]||'📦'} ${c}</span></div>`;
+      html+=`<div class="cat-row"><span class="cat-lbl">${c}</span></div>`;
       smap[s][c].forEach(it=>{html+=wrapItem(it)});
     });
     html+=`</div>`;
@@ -734,7 +740,6 @@ function renderList(){
 }
 
 function wrapItem(it){
-  const catObj=CATS.find(c=>c.key===it.cat)||CATS[7];
   return`<div class="item-wrap" id="w${it.id}">
     <div class="swipe-bg">
       <div class="swipe-del-lbl" id="sdl${it.id}">
@@ -748,7 +753,6 @@ function wrapItem(it){
           <path d="M1 5L4.5 8.5L11 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
-      <div class="item-cat-ico">${catObj.ico}</div>
       <div class="iinfo">
         <div class="iname">${it.name}</div>
         <div class="isub">
@@ -889,7 +893,7 @@ function chQty(id,d,btn){
 function quickAdd(){
   const inp=document.getElementById('qi');
   const name=inp.value.trim();if(!name)return;
-  const newItem={id:nid++,name,qty:1,cat:selectedCat,store:'Alle',done:false,alt:'',list:AL,price:0,recur:false,by:myName};
+  const newItem={id:nid++,name,qty:1,cat:autoCategory(name),store:'Alle',done:false,alt:'',list:AL,price:0,recur:false,by:myName};
   items.unshift(newItem);
   inp.value='';inp.focus();
   save();renderList();updateSum();
@@ -928,7 +932,7 @@ function setS(s){snew=s==='Alle'?'':s;renderSChips()}
 function addItem(){
   const name=document.getElementById('nname').value.trim();if(!name)return;
   const newItem={id:nid++,name,qty:parseInt(document.getElementById('nqty').value)||1,
-    cat:selectedCat,store:snew||'Alle',done:false,
+    cat:selectedCat||autoCategory(name),store:snew||'Alle',done:false,
     alt:document.getElementById('nalt').value.trim(),list:AL,
     price:parseFloat(document.getElementById('nprice').value)||0,
     recur:document.getElementById('rsw').classList.contains('on'),by:myName};
@@ -946,15 +950,18 @@ function openDet(id){
   document.getElementById('dtitle').textContent=it.name;
   let detCat=it.cat;
   document.getElementById('dbody').innerHTML=`
+    <div class="fg"><div class="flbl">Butikk</div><div class="chips" id="dschips"></div></div>
     <div class="fg"><div class="flbl">Kategori</div><div class="cat-picker" id="dcp"></div></div>
     <div class="fg"><div class="flbl">Alternativ (hvis utsolgt)</div><input class="finp" id="dalt" value="${it.alt||''}" placeholder="f.eks. et annet merke" autocomplete="off"></div>
     <div class="fg"><div class="flbl">Ca. pris (kr)</div><input class="finp" id="dprice" type="number" value="${it.price||''}" placeholder="0" style="text-align:center"></div>
     <div class="trow">
-      <div><div class="trow-lbl">Gjentas ukentlig</div><div class="trow-sub">↻ Legges til automatisk</div></div>
+      <div><div class="trow-lbl">Gjentas ukentlig</div><div class="trow-sub">Legges til automatisk</div></div>
       <button class="sw ${it.recur?'on':''}" id="dsw" onclick="this.classList.toggle('on')"></button>
     </div>
-    <button class="sbtn" onclick="saveDet(${id})">Lagre endringer</button>
+    <button class="sbtn" onclick="saveDet(${id})">Lagre</button>
     <button class="dbtn" onclick="delItem(${id})">Fjern fra listen</button>`;
+  _detStore=it.store||'Alle';
+  document.getElementById('dschips').innerHTML=[...STORES,'Alle'].map(s=>`<button class="chip${s===(it.store||'Alle')?' on':''}" onclick="setDetStore('${s}')">${s}</button>`).join('');
   renderCatPicker('dcp',it.cat);
   // Wire up det cat picker
   document.querySelectorAll('#dcp .cat-tile').forEach((t,i)=>{
@@ -962,12 +969,14 @@ function openDet(id){
   });
   document.getElementById('dOvl').classList.add('open');document.getElementById('dSh').classList.add('open');
 }
+function setDetStore(s){_detStore=s;document.querySelectorAll('#dschips .chip').forEach(c=>c.classList.toggle('on',c.textContent===s))}
 function saveDet(id){
   const it=items.find(i=>i.id===id);if(!it)return;
+  it.store=_detStore;
   it.alt=document.getElementById('dalt').value.trim();
   it.price=parseFloat(document.getElementById('dprice').value)||0;
   it.recur=document.getElementById('dsw').classList.contains('on');
-  save();closeDet();render();showToast('Lagret ✓');
+  save();closeDet();render();
 }
 function closeDet(){document.getElementById('dOvl').classList.remove('open');document.getElementById('dSh').classList.remove('open')}
 function delItem(id){items=items.filter(i=>i.id!==id);save();closeDet();render()}
@@ -992,9 +1001,11 @@ function shareM(m){showToast(`${m} åpnes… (demo)`);closeShare()}
 
 // ─── History ──────────────────────────────────────
 function openHist(){
-  document.getElementById('hbody').innerHTML=hist.length
-    ?hist.slice(0,20).map(h=>`<div class="hitem"><div style="flex:1"><div class="hname">${h.name}</div><div class="hmeta">${h.listName?`<span style="color:var(--accent);font-weight:500">${h.listName}</span> · `:''}${h.store||'–'} · ${h.date}</div></div><button class="hreuse" onclick="reuse('${h.name}','${h.store||'Alle'}','${h.cat||'Annet'}',${h.price||0})">+ Legg til</button></div>`).join('')
-    :'<div style="text-align:center;padding:40px;color:var(--ghost)">Ingen historikk ennå</div>';
+  const curList=LISTS[AL];
+  const filtered=hist.filter(h=>!h.listName||h.listName===curList);
+  document.getElementById('hbody').innerHTML=filtered.length
+    ?filtered.slice(0,30).map(h=>`<div class="hitem"><div style="flex:1"><div class="hname">${h.name}</div><div class="hmeta">${h.store||'–'} · ${h.date}</div></div><button class="hreuse" onclick="reuse('${h.name}','${h.store||'Alle'}','${h.cat||'Annet'}',${h.price||0})">Legg til</button></div>`).join('')
+    :'<div style="text-align:center;padding:40px;color:var(--ghost)">Ingenting handlet fra denne listen ennå</div>';
   document.getElementById('hOvl').classList.add('open');document.getElementById('hSh').classList.add('open');
 }
 function closeHist(){document.getElementById('hOvl').classList.remove('open');document.getElementById('hSh').classList.remove('open')}
@@ -1050,34 +1061,31 @@ function renderTemplates(){
       </div>`).join('')}
     </div>`;
 }
-function addTemplate(tid){const t=TEMPLATES.find(x=>x.id===tid);if(!t)return;let a=0;t.items.forEach(it=>{const name=typeof it==='string'?it:it.name;const price=typeof it==='object'?it.price:0;if(!items.find(i=>i.name===name&&i.list===AL&&!i.done)){items.unshift({id:nid++,name,qty:1,cat:'Annet',store:'Alle',done:false,alt:'',list:AL,price,recur:false,by:myName});a++}});save();switchView('list');render();showToast(`${a} varer fra «${t.name}» lagt til ✓`)}
+function addTemplate(tid,store){const t=TEMPLATES.find(x=>x.id===tid);if(!t)return;const s=store||t.store||'Alle';let a=0;t.items.forEach(it=>{const name=typeof it==='string'?it:it.name;const price=typeof it==='object'?it.price:0;if(!items.find(i=>i.name===name&&i.list===AL&&!i.done)){items.unshift({id:nid++,name,qty:1,cat:autoCategory(name),store:s,done:false,alt:'',list:AL,price,recur:false,by:myName});a++}});save();switchView('list');render();showToast(`${a} varer lagt til`)}
+let _tmplStore='Alle';
+function setTmplStore(s){_tmplStore=s;document.querySelectorAll('#tmplStoreChips .chip').forEach(c=>c.classList.toggle('on',c.textContent===s))}
 function openTemplate(tid){
   const t=TEMPLATES.find(x=>x.id===tid);if(!t)return;
+  _tmplStore=t.store||STORES[0]||'Alle';
   const total=t.items.reduce((s,it)=>s+(it.price||0),0);
   document.getElementById('tmplShTitle').textContent=t.name;
   document.getElementById('tmplShBody').innerHTML=`
-    <div style="display:flex;gap:14px;margin-bottom:22px;align-items:center">
-      <div style="font-size:44px">${t.ico}</div>
-      <div>
-        <div style="font-size:14px;color:var(--soft);margin-bottom:8px">${t.desc}</div>
-        <div style="display:flex;gap:8px">
-          <span style="font-size:12px;font-weight:600;background:var(--al);color:var(--accent);padding:3px 10px;border-radius:100px">${t.items.length} varer</span>
-          <span style="font-size:12px;font-weight:600;background:var(--surface2);color:var(--soft);padding:3px 10px;border-radius:100px">👥 ${t.portions} pers.</span>
-        </div>
+    <div style="margin-bottom:18px">
+      <div style="font-size:14px;color:var(--soft);margin-bottom:12px">${t.desc} · ${t.portions} pers.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span style="font-size:12px;font-weight:600;background:var(--al);color:var(--accent);padding:3px 10px;border-radius:100px">${t.items.length} varer</span>
+        <span style="font-size:12px;font-weight:600;background:var(--al);color:var(--accent);padding:3px 10px;border-radius:100px">≈ ${total} kr</span>
       </div>
     </div>
+    <div class="fg"><div class="flbl">Butikk</div><div class="chips" id="tmplStoreChips">${[...STORES,'Alle'].map(s=>`<button class="chip${s===_tmplStore?' on':''}" onclick="setTmplStore('${s}')">${s}</button>`).join('')}</div></div>
     <div style="background:var(--surface2);border-radius:14px;overflow:hidden;margin-bottom:18px">
       ${t.items.map((it,i)=>`
         <div style="display:flex;justify-content:space-between;align-items:center;padding:13px 16px${i>0?';box-shadow:inset 0 1px 0 var(--line)':''}">
           <span style="font-size:14px">${it.name}</span>
           <span style="font-size:13px;color:var(--soft)">${it.price?it.price+' kr':'–'}</span>
         </div>`).join('')}
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:13px 16px;background:var(--al);box-shadow:inset 0 1px 0 var(--line)">
-        <span style="font-size:14px;font-weight:700;color:var(--accent)">Estimert totalt</span>
-        <span style="font-size:14px;font-weight:700;color:var(--accent)">≈ ${total} kr</span>
-      </div>
     </div>
-    <button class="sbtn" onclick="addTemplate('${tid}');closeTemplate()">Legg til i listen ✓</button>`;
+    <button class="sbtn" onclick="addTemplate('${tid}',_tmplStore);closeTemplate()">Legg til i listen</button>`;
   document.getElementById('tmplOvl').classList.add('open');document.getElementById('tmplSh').classList.add('open');
 }
 function closeTemplate(){document.getElementById('tmplOvl').classList.remove('open');document.getElementById('tmplSh').classList.remove('open')}
@@ -1134,26 +1142,9 @@ function showToast(msg){
   clearTimeout(_tid);_tid=setTimeout(()=>{t.classList.remove('show');t.classList.add('hide')},2300);
 }
 
-// ─── Partner notif ────────────────────────────────
-function showPartnerNotif(){
-  document.getElementById('ndot').style.display='block';
-  showToast('Sofie la til «Rømme» 🛒');
-  setTimeout(()=>document.getElementById('ndot').style.display='none',9000);
-}
-
 // ─── Render ───────────────────────────────────────
 function render(){renderTabs();renderList();updateSum();renderSChips();renderCatPicker()}
 if(localStorage.getItem('k_ob')==='1')render();
-
-// Demo: partner adds item after 10s
-setTimeout(()=>{
-  if(localStorage.getItem('k_ob')!=='1')return;
-  if(!items.find(it=>it.name==='Rømme'&&it.list===0)){
-    items.unshift({id:nid++,name:'Rømme',qty:1,cat:'Meieri',store:'Rema 1000',done:false,alt:'',list:0,price:22,recur:false,by:'S'});
-    save();showPartnerNotif();if(AL===0&&currentView==='list')render();
-    setTimeout(()=>{const el=document.getElementById('i'+(nid-1));if(el)el.classList.add('new-in')},80);
-  }
-},10000);
 </script>
 </body>
 </html>
