@@ -555,25 +555,10 @@ const TEMPLATES=[
 let AL=0,showDone=false,snew='',selectedCat='Annet',nid=100,myName='D',darkMode=false,currentView='list',_detStore='Alle',_detId=null;
 let items=[],weekPlan={},hist=[],LISTS=[];
 const DEFS={
-  items:[
-    {id:1,name:'Helmelk 1L',qty:2,cat:'Meieri',store:'Meny',done:false,alt:'Lettmelk',list:0,price:25,recur:true,by:'S'},
-    {id:2,name:'Grovbrød',qty:1,cat:'Bakeri',store:'Meny',done:false,alt:'Knekkebrød',list:0,price:42,recur:true,by:'D'},
-    {id:3,name:'Laksefilet',qty:1,cat:'Kjøtt & fisk',store:'Meny',done:false,alt:'Ørretfilet',list:0,price:89,recur:false,by:'D'},
-    {id:4,name:'Appelsinjuice',qty:1,cat:'Drikke',store:'Meny',done:false,alt:'',list:0,price:36,recur:false,by:'S'},
-    {id:5,name:'Egg 12pk',qty:1,cat:'Meieri',store:'Rema 1000',done:false,alt:'',list:0,price:38,recur:true,by:'D'},
-    {id:6,name:'Kyllingfilet',qty:2,cat:'Kjøtt & fisk',store:'Rema 1000',done:false,alt:'Kalkun',list:0,price:75,recur:false,by:'S'},
-    {id:7,name:'Pasta penne',qty:2,cat:'Tørrmat',store:'Rema 1000',done:false,alt:'Spaghetti',list:0,price:18,recur:false,by:'D'},
-    {id:8,name:'Epler',qty:6,cat:'Frukt & grønt',store:'Kiwi',done:false,alt:'Pærer',list:0,price:5,recur:false,by:'D'},
-    {id:9,name:'Bananer',qty:1,cat:'Frukt & grønt',store:'Kiwi',done:false,alt:'',list:0,price:15,recur:true,by:'S'},
-    {id:10,name:'Rødvin',qty:1,cat:'Drikke',store:'Kiwi',done:false,alt:'',list:0,price:130,recur:false,by:'S'},
-    {id:11,name:'Fløte',qty:1,cat:'Meieri',store:'Rema 1000',done:false,alt:'Crème fraîche',list:1,price:29,recur:false,by:'D'},
-    {id:12,name:'Tomat på boks',qty:3,cat:'Tørrmat',store:'Kiwi',done:false,alt:'',list:1,price:14,recur:false,by:'S'},
-    {id:13,name:'Oppvaskmiddel',qty:1,cat:'Hushold',store:'Kiwi',done:false,alt:'',list:2,price:45,recur:true,by:'D'},
-    {id:14,name:'Toalettpapir',qty:2,cat:'Hushold',store:'Rema 1000',done:false,alt:'',list:2,price:59,recur:true,by:'D'},
-  ],
-  lists:['Ukeshandel','Middag lørdag','Hushold'],
-  week:{0:['Pasta bolognese'],1:['Laksemiddag'],2:['Tacos'],3:[],4:['Hjemmelaget pizza'],5:['Grillmat'],6:['Søndagssteik']},
-  hist:[{name:'Brie',date:'18. mars',store:'Meny',cat:'Meieri',price:89},{name:'Hvitvin',date:'11. mars',store:'Kiwi',cat:'Drikke',price:120}]
+  items:[],
+  lists:['Handleliste'],
+  week:{},
+  hist:[]
 };
 
 // ─── Auto-category ───────────────────────────────
