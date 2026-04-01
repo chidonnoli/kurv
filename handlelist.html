@@ -74,11 +74,11 @@ html,body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--ink)
 @keyframes tabIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
 /* ── List tabs ── */
-.tabs-wrap{padding:14px 24px 0;background:var(--bg);flex-shrink:0;transition:background .3s}
-.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:14px}
+.tabs-wrap{padding:14px 20px 0;background:var(--bg);flex-shrink:0;transition:background .3s}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 4px 14px}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex-shrink:0;padding:7px 16px;border-radius:100px;font-size:13px;cursor:pointer;border:none;font-family:inherit;transition:all .2s cubic-bezier(.34,1.56,.64,1);outline:none}
-.tab.on{background:var(--ink);color:var(--bg);font-weight:500;transform:scale(1.04)}
+.tab{flex-shrink:0;padding:7px 16px;border-radius:100px;font-size:13px;cursor:pointer;border:none;font-family:inherit;transition:all .2s;outline:none}
+.tab.on{background:var(--ink);color:var(--bg);font-weight:500}
 .tab:not(.on){background:transparent;color:var(--soft)}
 .tab.add{color:var(--accent);padding:7px 10px;font-size:20px;background:transparent}
 
@@ -305,13 +305,11 @@ html,body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--ink)
 .dbtn:active{transform:scale(.98)}
 
 /* Category picker */
-.cat-picker{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px}
-.cat-tile{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface2);cursor:pointer;transition:all .2s cubic-bezier(.34,1.4,.64,1);font-family:inherit}
-.cat-tile:active{transform:scale(.9)}
-.cat-tile.on{border-color:var(--am);background:var(--al);transform:scale(1.04)}
-.cat-tile-ico{font-size:26px;line-height:1;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
-.cat-tile.on .cat-tile-ico{transform:scale(1.15)}
-.cat-tile-lbl{font-size:10px;font-weight:500;color:var(--soft);letter-spacing:.02em;text-align:center;line-height:1.2}
+.cat-picker{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.cat-tile{display:flex;align-items:center;padding:8px 14px;border-radius:100px;border:1.5px solid var(--line);background:var(--surface2);cursor:pointer;transition:all .18s;font-family:inherit}
+.cat-tile.on{border-color:var(--am);background:var(--al)}
+.cat-tile-ico{display:none}
+.cat-tile-lbl{font-size:13px;font-weight:500;color:var(--soft);white-space:nowrap}
 .cat-tile.on .cat-tile-lbl{color:var(--accent)}
 
 /* Share */
@@ -554,7 +552,7 @@ const TEMPLATES=[
 ];
 
 // ─── State ───────────────────────────────────────
-let AL=0,showDone=false,snew='',selectedCat='Annet',nid=100,myName='D',darkMode=false,currentView='list',_detStore='Alle';
+let AL=0,showDone=false,snew='',selectedCat='Annet',nid=100,myName='D',darkMode=false,currentView='list',_detStore='Alle',_detId=null;
 let items=[],weekPlan={},hist=[],LISTS=[];
 const DEFS={
   items:[
@@ -947,6 +945,7 @@ function addItem(){
 // ─── Detail sheet ─────────────────────────────────
 function openDet(id){
   const it=items.find(i=>i.id===id);if(!it)return;
+  _detId=id;
   document.getElementById('dtitle').textContent=it.name;
   let detCat=it.cat;
   document.getElementById('dbody').innerHTML=`
@@ -958,7 +957,6 @@ function openDet(id){
       <div><div class="trow-lbl">Gjentas ukentlig</div><div class="trow-sub">Legges til automatisk</div></div>
       <button class="sw ${it.recur?'on':''}" id="dsw" onclick="this.classList.toggle('on')"></button>
     </div>
-    <button class="sbtn" onclick="saveDet(${id})">Lagre</button>
     <button class="dbtn" onclick="delItem(${id})">Fjern fra listen</button>`;
   _detStore=it.store||'Alle';
   document.getElementById('dschips').innerHTML=[...STORES,'Alle'].map(s=>`<button class="chip${s===(it.store||'Alle')?' on':''}" onclick="setDetStore('${s}')">${s}</button>`).join('');
@@ -970,15 +968,20 @@ function openDet(id){
   document.getElementById('dOvl').classList.add('open');document.getElementById('dSh').classList.add('open');
 }
 function setDetStore(s){_detStore=s;document.querySelectorAll('#dschips .chip').forEach(c=>c.classList.toggle('on',c.textContent===s))}
-function saveDet(id){
-  const it=items.find(i=>i.id===id);if(!it)return;
-  it.store=_detStore;
-  it.alt=document.getElementById('dalt').value.trim();
-  it.price=parseFloat(document.getElementById('dprice').value)||0;
-  it.recur=document.getElementById('dsw').classList.contains('on');
-  save();closeDet();render();
+function closeDet(){
+  if(_detId){
+    const it=items.find(i=>i.id===_detId);
+    if(it){
+      it.store=_detStore;
+      it.alt=(document.getElementById('dalt')?.value||'').trim();
+      it.price=parseFloat(document.getElementById('dprice')?.value)||0;
+      it.recur=document.getElementById('dsw')?.classList.contains('on')||false;
+      save();render();
+    }
+    _detId=null;
+  }
+  document.getElementById('dOvl').classList.remove('open');document.getElementById('dSh').classList.remove('open');
 }
-function closeDet(){document.getElementById('dOvl').classList.remove('open');document.getElementById('dSh').classList.remove('open')}
 function delItem(id){items=items.filter(i=>i.id!==id);save();closeDet();render()}
 
 // ─── Share ────────────────────────────────────────
@@ -1001,11 +1004,9 @@ function shareM(m){showToast(`${m} åpnes… (demo)`);closeShare()}
 
 // ─── History ──────────────────────────────────────
 function openHist(){
-  const curList=LISTS[AL];
-  const filtered=hist.filter(h=>!h.listName||h.listName===curList);
-  document.getElementById('hbody').innerHTML=filtered.length
-    ?filtered.slice(0,30).map(h=>`<div class="hitem"><div style="flex:1"><div class="hname">${h.name}</div><div class="hmeta">${h.store||'–'} · ${h.date}</div></div><button class="hreuse" onclick="reuse('${h.name}','${h.store||'Alle'}','${h.cat||'Annet'}',${h.price||0})">Legg til</button></div>`).join('')
-    :'<div style="text-align:center;padding:40px;color:var(--ghost)">Ingenting handlet fra denne listen ennå</div>';
+  document.getElementById('hbody').innerHTML=hist.length
+    ?hist.slice(0,40).map(h=>`<div class="hitem"><div style="flex:1"><div class="hname">${h.name}</div><div class="hmeta">${h.listName?`<span style="color:var(--accent)">${h.listName}</span> · `:''}${h.store||'–'} · ${h.date}</div></div><button class="hreuse" onclick="reuse('${h.name}','${h.store||'Alle'}','${h.cat||'Annet'}',${h.price||0})">Legg til</button></div>`).join('')
+    :'<div style="text-align:center;padding:40px;color:var(--ghost)">Ingen historikk ennå</div>';
   document.getElementById('hOvl').classList.add('open');document.getElementById('hSh').classList.add('open');
 }
 function closeHist(){document.getElementById('hOvl').classList.remove('open');document.getElementById('hSh').classList.remove('open')}
@@ -1129,7 +1130,7 @@ function renderSettStores(el){
 function addStore(){const inp=document.getElementById('newStoreInp');const n=inp.value.trim();if(!n)return;if(STORES.includes(n)){showToast('Finnes allerede');return;}STORES.push(n);inp.value='';save();renderSChips();renderSettStores(document.getElementById('stBody'))}
 function deleteStore(i){const name=STORES[i];STORES.splice(i,1);items.forEach(it=>{if(it.store===name)it.store='Alle'});save();renderSChips();renderList();renderSettStores(document.getElementById('stBody'))}
 function renderSettCats(el){
-  el.innerHTML=`<div style="margin-bottom:16px">${CATS.map((c,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:12px 0;box-shadow:inset 0 1px 0 var(--line)"><span style="font-size:20px">${c.ico}</span><span style="flex:1;font-size:15px">${c.key}</span>${CATS.length>1?`<button onclick="deleteCat(${i})" style="font-size:12px;color:var(--warn);background:var(--wl);border:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-family:inherit">Fjern</button>`:''}</div>`).join('')}</div><div style="display:flex;gap:8px"><input class="finp" id="newCatInp" placeholder="Ny kategori…" autocomplete="off" style="flex:1" onkeydown="if(event.key==='Enter')addCat()"><button onclick="addCat()" style="padding:12px 16px;background:var(--ink);color:var(--bg);border:none;border-radius:10px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;white-space:nowrap">Legg til</button></div>`;
+  el.innerHTML=`<div style="margin-bottom:16px">${CATS.map((c,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:12px 0;box-shadow:inset 0 1px 0 var(--line)"><span style="flex:1;font-size:15px">${c.key}</span>${CATS.length>1?`<button onclick="deleteCat(${i})" style="font-size:12px;color:var(--warn);background:var(--wl);border:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-family:inherit">Fjern</button>`:''}</div>`).join('')}</div><div style="display:flex;gap:8px"><input class="finp" id="newCatInp" placeholder="Ny kategori…" autocomplete="off" style="flex:1" onkeydown="if(event.key==='Enter')addCat()"><button onclick="addCat()" style="padding:12px 16px;background:var(--ink);color:var(--bg);border:none;border-radius:10px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;white-space:nowrap">Legg til</button></div>`;
 }
 function addCat(){const inp=document.getElementById('newCatInp');const n=inp.value.trim();if(!n)return;if(CATS.find(c=>c.key===n)){showToast('Finnes allerede');return;}CATS.push({key:n,ico:'📦',lbl:n});inp.value='';recomputeICO();recomputeCORD();save();renderCatPicker();renderSettCats(document.getElementById('stBody'))}
 function deleteCat(i){const key=CATS[i].key;CATS.splice(i,1);items.forEach(it=>{if(it.cat===key)it.cat=CATS[0]?.key||'Annet'});if(selectedCat===key)selectedCat=CATS[0]?.key||'Annet';recomputeICO();recomputeCORD();save();renderCatPicker();renderList();renderSettCats(document.getElementById('stBody'))}
