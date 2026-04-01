@@ -1,24 +1,24 @@
 {
   "name": "Kurv – Handleliste",
   "short_name": "Kurv",
-  "description": "Elegant handleliste for deg og samboeren din",
+  "description": "Elegant handleliste",
   "start_url": "./handlelist.html",
   "display": "standalone",
-  "background_color": "#FAF8F5",
-  "theme_color": "#FAF8F5",
+  "background_color": "#fef9ee",
+  "theme_color": "#fef9ee",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='42' fill='%232D6A4F'/><text x='96' y='130' font-size='110' text-anchor='middle'>🛒</text></svg>",
-      "sizes": "192x192",
+      "src": "icon.svg",
+      "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='112' fill='%232D6A4F'/><text x='256' y='350' font-size='300' text-anchor='middle'>🛒</text></svg>",
-      "sizes": "512x512",
+      "src": "icon.svg",
+      "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     }
   ],
   "categories": ["food", "lifestyle", "utilities"],

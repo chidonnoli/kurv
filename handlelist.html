@@ -8,6 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="Kurv">
 <meta name="theme-color" content="#fef9ee" id="themeColor">
 <link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.svg">
 <title>Kurv</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1146,9 +1147,14 @@ function addSheetSwipe(sheetId,closeFn){
   sh.addEventListener('touchend',()=>{
     if(!dragging)return;
     dragging=false;
-    sh.style.transition='';
-    if(dy>90){closeFn()}
-    else{sh.style.transform='translateX(-50%) translateY(0)'}
+    if(dy>90){
+      sh.style.transition='transform .3s cubic-bezier(.32,.72,0,1)';
+      sh.style.transform='translateX(-50%) translateY(102%)';
+      setTimeout(()=>{sh.style.transform='';sh.style.transition='';closeFn()},300);
+    }else{
+      sh.style.transition='transform .4s cubic-bezier(.34,1.4,.64,1)';
+      sh.style.transform='translateX(-50%) translateY(0)';
+    }
     dy=0;
   });
 }
