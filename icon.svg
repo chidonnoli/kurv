@@ -7,12 +7,13 @@
   </defs>
   <rect width="512" height="512" rx="115" fill="url(#bg)"/>
   <text
-    x="256" y="320"
+    x="256" y="296"
     font-family="Georgia, 'Times New Roman', serif"
     font-style="italic"
     font-weight="700"
-    font-size="220"
+    font-size="148"
     text-anchor="middle"
     fill="#0f5238"
+    letter-spacing="-2"
   >Kurv</text>
 </svg>
