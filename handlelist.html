@@ -1129,6 +1129,35 @@ function showToast(msg){
   clearTimeout(_tid);_tid=setTimeout(()=>{t.classList.remove('show');t.classList.add('hide')},2300);
 }
 
+// ─── Swipe-to-close sheets ────────────────────────
+function addSheetSwipe(sheetId,closeFn){
+  const sh=document.getElementById(sheetId);if(!sh)return;
+  let sy=0,dy=0,dragging=false;
+  sh.addEventListener('touchstart',e=>{
+    if(sh.scrollTop>0)return;
+    sy=e.touches[0].clientY;dy=0;dragging=true;
+    sh.style.transition='none';
+  },{passive:true});
+  sh.addEventListener('touchmove',e=>{
+    if(!dragging)return;
+    dy=Math.max(0,e.touches[0].clientY-sy);
+    sh.style.transform=`translateX(-50%) translateY(${dy}px)`;
+  },{passive:true});
+  sh.addEventListener('touchend',()=>{
+    if(!dragging)return;
+    dragging=false;
+    sh.style.transition='';
+    if(dy>90){closeFn()}
+    else{sh.style.transform='translateX(-50%) translateY(0)'}
+    dy=0;
+  });
+}
+const _sheetMap=[
+  ['dSh',()=>closeDet()],['aSh',()=>closeAdd()],['shSh',()=>closeShare()],
+  ['hSh',()=>closeHist()],['daySh',()=>closeDaySh()],['tmplSh',()=>closeTemplate()],['stSh',()=>closeSett()]
+];
+_sheetMap.forEach(([id,fn])=>addSheetSwipe(id,fn));
+
 // ─── Render ───────────────────────────────────────
 function render(){renderTabs();renderList();updateSum();renderSChips();renderCatPicker()}
 if(localStorage.getItem('k_ob')==='1')render();
