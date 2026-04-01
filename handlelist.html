@@ -684,7 +684,7 @@ function renderTabs(){
     `<button class="tab add" onclick="addList()">＋</button>`;
 }
 function swList(i){AL=i;showDone=false;save();renderTabs();renderList();updateSum()}
-function addList(){const n=prompt('Navn på ny liste:');if(n&&n.trim()){LISTS.push(n.trim());AL=LISTS.length-1;save();render()}}
+function addList(){const n=prompt('Navn på ny liste:');if(n&&n.trim()){const t=n.trim();if(LISTS.some(l=>l.toLowerCase()===t.toLowerCase())){alert('Det finnes allerede en liste med dette navnet.');return;}LISTS.push(t);AL=LISTS.length-1;save();render()}}
 
 // ─── List render ──────────────────────────────────
 function renderList(){
@@ -1048,7 +1048,7 @@ function renderTemplates(){
       </div>`).join('')}
     </div>`;
 }
-function addTemplate(tid,store){const t=TEMPLATES.find(x=>x.id===tid);if(!t)return;const s=store||t.store||'Alle';let a=0;t.items.forEach(it=>{const name=typeof it==='string'?it:it.name;const price=typeof it==='object'?it.price:0;if(!items.find(i=>i.name===name&&i.list===AL&&!i.done)){items.unshift({id:nid++,name,qty:1,cat:autoCategory(name),store:s,done:false,alt:'',list:AL,price,recur:false,by:myName});a++}});save();switchView('list');render();showToast(`${a} varer lagt til`)}
+function addTemplate(tid,store){const t=TEMPLATES.find(x=>x.id===tid);if(!t)return;const s=store||t.store||'Alle';let a=0;t.items.forEach(it=>{const name=typeof it==='string'?it:it.name;const price=typeof it==='object'?it.price:0;if(!items.find(i=>i.name===name&&i.list===AL&&!i.done)){items.unshift({id:nid++,name,qty:1,cat:autoCategory(name),store:s,done:false,alt:'',list:AL,price,recur:false,by:myName});a++}});save();closeTemplate();switchView('list');render();showToast(`${a} varer lagt til`)}
 let _tmplStore='Alle';
 function setTmplStore(s){_tmplStore=s;document.querySelectorAll('#tmplStoreChips .chip').forEach(c=>c.classList.toggle('on',c.textContent===s))}
 function openTemplate(tid){
@@ -1072,7 +1072,7 @@ function openTemplate(tid){
           <span style="font-size:13px;color:var(--soft)">${it.price?it.price+' kr':'–'}</span>
         </div>`).join('')}
     </div>
-    <button class="sbtn" onclick="addTemplate('${tid}',_tmplStore);closeTemplate()">Legg til i listen</button>`;
+    <button class="sbtn" onclick="addTemplate('${tid}',_tmplStore)">Legg til i listen</button>`;
   document.getElementById('tmplOvl').classList.add('open');document.getElementById('tmplSh').classList.add('open');
 }
 function closeTemplate(){document.getElementById('tmplOvl').classList.remove('open');document.getElementById('tmplSh').classList.remove('open')}
@@ -1101,8 +1101,8 @@ function renderSettGeneral(el){
 function renderSettLists(el){
   el.innerHTML=`<div style="margin-bottom:16px">${LISTS.map((l,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:12px 0;box-shadow:inset 0 1px 0 var(--line)"><span style="flex:1;font-size:15px">${l}</span><button onclick="renameList(${i})" style="font-size:12px;color:var(--accent);background:var(--al);border:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-family:inherit">Navn</button>${LISTS.length>1?`<button onclick="deleteList(${i})" style="font-size:12px;color:var(--warn);background:var(--wl);border:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-family:inherit">Slett</button>`:''}</div>`).join('')}</div><div style="display:flex;gap:8px"><input class="finp" id="newListInp" placeholder="Ny liste…" autocomplete="off" style="flex:1" onkeydown="if(event.key==='Enter')addListSett()"><button onclick="addListSett()" style="padding:12px 16px;background:var(--ink);color:var(--bg);border:none;border-radius:10px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;white-space:nowrap">Legg til</button></div>`;
 }
-function addListSett(){const inp=document.getElementById('newListInp');const n=inp.value.trim();if(!n)return;LISTS.push(n);inp.value='';save();renderTabs();renderSettLists(document.getElementById('stBody'))}
-function renameList(i){const n=prompt('Nytt navn:',LISTS[i]);if(n&&n.trim()){LISTS[i]=n.trim();save();renderTabs();renderSettLists(document.getElementById('stBody'))}}
+function addListSett(){const inp=document.getElementById('newListInp');const n=inp.value.trim();if(!n)return;if(LISTS.some(l=>l.toLowerCase()===n.toLowerCase())){showToast('Finnes allerede');return;}LISTS.push(n);inp.value='';save();renderTabs();renderSettLists(document.getElementById('stBody'))}
+function renameList(i){const n=prompt('Nytt navn:',LISTS[i]);if(n&&n.trim()){const t=n.trim();if(LISTS.some((l,j)=>j!==i&&l.toLowerCase()===t.toLowerCase())){alert('Det finnes allerede en liste med dette navnet.');return;}LISTS[i]=t;save();renderTabs();renderSettLists(document.getElementById('stBody'))}}
 function deleteList(i){
   if(!confirm(`Slett «${LISTS[i]}»? Varene på listen slettes også.`))return;
   items=items.filter(it=>it.list!==i);
